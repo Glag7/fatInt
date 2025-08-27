@@ -5,7 +5,7 @@ OBJ_DIR = obj/
 HDR_DIR = includes/
 
 COMP = c++
-CPPFLAGS = -Wall -Wextra -Werror
+CPPFLAGS = -Wall -Wextra #-Werror
 
 SRC = $(shell find $(SRC_DIR) -name '*.cpp')
 
