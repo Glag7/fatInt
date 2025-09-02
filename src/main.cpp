@@ -3,5 +3,7 @@
 
 int	main()
 {
-	std::cout << "hulo\n";
+	FatInt	f;
+
+	std::cout << "hulo " << f << "\n";
 }
