@@ -21,6 +21,10 @@ class	FatInt
 		FatInt(const std::string &s);//move copy etc
 
 		//operator=(const FatInt &n);
+		//unary -, ++, etc
+		FatInt	operator-() const;
+		void	flip();
+		//FatInt	operator~() const;
 		FatInt	operator+(const FatInt &n) const;
 		FatInt	operator-(const FatInt &n) const;
 		//FatInt	operator-(const FatInt &n);//*/% + bool

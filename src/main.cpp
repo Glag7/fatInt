@@ -7,5 +7,5 @@ int	main()
 	FatInt	b(9223372036854775807);
 	FatInt	c(1);
 
-	std::cout << a << " + " << c << " = " << a + c << "\n";
+	std::cout << a << " - " << c << " = " << c - b << "\n";
 }
