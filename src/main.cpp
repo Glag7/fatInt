@@ -3,7 +3,9 @@
 
 int	main()
 {
-	FatInt	f;
+	FatInt	a(2);
+	FatInt	b(9223372036854775807);
+	FatInt	c(1);
 
-	std::cout << "hulo " << f << "\n";
+	std::cout << a << " + " << c << " = " << a + c << "\n";
 }
