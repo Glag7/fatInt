@@ -21,6 +21,7 @@ FatInt::FatInt(int64_t n)
 
 FatInt::FatInt(const std::string &s)
 {
+	//TODO
 }
 
 FatInt	FatInt::operator-() const

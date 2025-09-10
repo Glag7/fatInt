@@ -12,7 +12,7 @@ class	FatInt
 		static uint64_t			wordmax;
 
 		FatInt();
-		
+	
 		std::vector<uint32_t>	words;
 		bool					neg;
 
@@ -23,6 +23,7 @@ class	FatInt
 		//operator=(const FatInt &n);
 		//unary -, ++, etc
 		FatInt	operator-() const;
+		FatInt	operator~() const;
 		void	flip();
 		//FatInt	operator~() const;
 		FatInt	operator+(const FatInt &n) const;
