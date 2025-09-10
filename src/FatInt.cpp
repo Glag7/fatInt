@@ -24,6 +24,38 @@ FatInt::FatInt(const std::string &s)
 	//TODO
 }
 
+void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
+{
+	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
+	const FatInt	&big = (&small == &a) ? b : a;
+	size_t			i = 0;
+	uint32_t		carry = 0;
+
+	dst.words.reserve(big.words.size() + 1);
+	while (i < small.words.size())
+	{
+		uint64_t	tmp = static_cast<uint64_t>(small.words[i]) + big.words[i] + carry;
+
+		dst.words.push_back(static_cast<uint32_t>(tmp & wordmax));
+		carry = (tmp & ~wordmax) >> 32;
+		++i;
+	}
+	while (i < big.words.size())
+	{
+		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) + carry;
+
+		dst.words.push_back(tmp & wordmax);
+		carry = (tmp & ~wordmax) >> 32;
+		++i;
+	}
+	if (carry)
+		dst.words.push_back(1);
+}
+
+static void	usub(FatInt &dst, const FatInt &a, const FatInt &b)
+{
+}
+
 FatInt	FatInt::operator-() const
 {
 	FatInt	res = *this;
@@ -45,31 +77,9 @@ FatInt	FatInt::operator+(const FatInt &n) const
 		//FIXME uadd usub pour eviter de totu comparer 2 fois
 
 	FatInt			res;
-	const FatInt	&small = (words.size() > n.words.size()) ? n : *this;
-	const FatInt	&big = (&small == this) ? n : *this;
-	size_t			i = 0;
-	uint32_t		carry = 0;
 
-	res.words.reserve(big.words.size() + 1);
 	res.neg = neg;
-	while (i < small.words.size())
-	{
-		uint64_t	tmp = static_cast<uint64_t>(small.words[i]) + big.words[i] + carry;
-
-		res.words.push_back(static_cast<uint32_t>(tmp & wordmax));
-		carry = (tmp & ~wordmax) >> 32;
-		++i;
-	}
-	while (i < big.words.size())
-	{
-		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) + carry;
-
-		res.words.push_back(tmp & wordmax);
-		carry = (tmp & ~wordmax) >> 32;
-		++i;
-	}
-	if (carry)
-		res.words.push_back(1);
+	uadd(res, *this, n);
 	return res;
 }
 
