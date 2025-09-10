@@ -76,14 +76,26 @@ void	FatInt::usub(FatInt &dst, const FatInt &a, const FatInt &b)
 		carry = (tmp & ~wordmax) >> 32;
 		++i;
 	}
-	if (carry)
+	if (carry)//FIXME result is fucked if carry and a < b
 	{
-		//std::cout << "wooooooo\n";
-		dst.words.push_back(carry);
-		dst.flip();
-		dst = dst + 1;//++
+		size_t	i = 0;
+
+		while (i < dst.words.size() && carry)//word full of 0 ?
+		{
+			uint64_t	tmp = static_cast<uint64_t>(~dst.words[i]) + 1;
+			
+			dst.words[i] = static_cast<uint32_t>(tmp & wordmax);
+			carry = (tmp & ~wordmax) >> 32;
+			++i;
+		}
+		while (i < dst.words.size())
+		{
+			dst.words[i] = ~dst.words[i];
+			++i;
+		}
+		if (carry)
+			dst.words.push_back(carry);//1?
 		dst.neg = true;
-		//tout xor, + 1, signe a neg
 	}
 	dst.neg ^= (&small == &a) ^ a.neg;
 }
