@@ -52,8 +52,40 @@ void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
 		dst.words.push_back(1);
 }
 
-static void	usub(FatInt &dst, const FatInt &a, const FatInt &b)
+void	FatInt::usub(FatInt &dst, const FatInt &a, const FatInt &b)
 {
+	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
+	const FatInt	&big = (&small == &a) ? b : a;
+	size_t			i = 0;
+	uint32_t		carry = 0;
+
+	dst.words.reserve(big.words.size());
+	while (i < small.words.size())
+	{
+		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) - small.words[i] - carry;
+
+		dst.words.push_back(static_cast<uint32_t>(tmp & wordmax));
+		carry = (tmp & ~wordmax) >> 32;
+		++i;
+	}
+	while (i < big.words.size())
+	{
+		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) - carry;
+
+		dst.words.push_back(tmp & wordmax);
+		carry = (tmp & ~wordmax) >> 32;
+		++i;
+	}
+	if (carry)
+	{
+		//std::cout << "wooooooo\n";
+		dst.words.push_back(carry);
+		dst.flip();
+		dst = dst + 1;//++
+		dst.neg = true;
+		//tout xor, + 1, signe a neg
+	}
+	dst.neg ^= (&small == &a) ^ a.neg;
 }
 
 FatInt	FatInt::operator-() const
@@ -72,57 +104,33 @@ void	FatInt::flip()
 
 FatInt	FatInt::operator+(const FatInt &n) const
 {
-	if (neg != n.neg)
-		return (neg) ? n - -*this : *this - -n;//un peu a chier, passer par un wrapper
-		//FIXME uadd usub pour eviter de totu comparer 2 fois
-
 	FatInt			res;
 
-	res.neg = neg;
-	uadd(res, *this, n);
+	if (neg != n.neg)
+	{
+		usub(res, *this, n);
+	}
+	else
+	{
+		res.neg = neg;
+		uadd(res, *this, n);
+	}
 	return res;
 }
 
-//envoer dans le usub (qui peut renvoyer des negatifs) pusi xor
-
-#include <iostream>
-FatInt	FatInt::operator-(const FatInt &n) const//considere les 2 positifs
+FatInt	FatInt::operator-(const FatInt &n) const
 {
 	FatInt			res;
-	const FatInt	&small = (words.size() > n.words.size()) ? n : *this;
-	const FatInt	&big = (&small == this) ? n : *this;
-	size_t			i = 0;
-	uint32_t		carry = 0;
 
-	res.words.reserve(big.words.size() + 1);
-	while (i < small.words.size())
+	if (neg == n.neg)
 	{
-		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) - small.words[i] - carry;
-
-		res.words.push_back(static_cast<uint32_t>(tmp & wordmax));
-		carry = (tmp & ~wordmax) >> 32;
-		++i;
+		usub(res, *this, n);
 	}
-	while (i < big.words.size())
+	else
 	{
-		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) - carry;
-
-		res.words.push_back(tmp & wordmax);
-		carry = (tmp & ~wordmax) >> 32;
-		++i;
+		res.neg = neg;
+		uadd(res, *this, n);
 	}
-	if (carry)
-	{
-		//std::cout << "wooooooo\n";
-		res.words.push_back(carry);
-		res.flip();
-		res = res + 1;//++
-		res.neg = true;
-		//tout xor, + 1, signe a neg
-	}
-	res.neg ^= &small == this;
-	//check si carry plus grand que le reste du nombre, si c'est le cas les nombres etaient flip
-	//prendre en compte signes, n et this et big et small
 	return res;
 }
 
