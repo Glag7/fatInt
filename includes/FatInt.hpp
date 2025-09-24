@@ -18,6 +18,8 @@ class	FatInt
 
 		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	usub(FatInt &dst, const FatInt &a, const FatInt &b);
+		
+		void	trim();
 
 	public:
 		FatInt(int64_t n);
