@@ -36,7 +36,7 @@ void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
 	{
 		uint64_t	tmp = static_cast<uint64_t>(small.words[i]) + big.words[i] + carry;
 
-		dst.words.push_back(static_cast<uint32_t>(tmp & wordmax));
+		dst.words.push_back(tmp & wordmax);
 		carry = (tmp & ~wordmax) >> 32;
 		++i;
 	}
@@ -52,7 +52,6 @@ void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
 		dst.words.push_back(1);
 }
 
-#include <iostream>
 void	FatInt::usub(FatInt &dst, const FatInt &a, const FatInt &b)
 {
 	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
@@ -60,34 +59,25 @@ void	FatInt::usub(FatInt &dst, const FatInt &a, const FatInt &b)
 	size_t			i = 0;
 	uint32_t		carry = 0;
 
-	//std::cerr << "big: " << big << "\n";
-	//std::cerr << "small: " << small << "\n";
 	dst.words.reserve(big.words.size());
 	while (i < small.words.size())
 	{
-		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) - small.words[i] - !!carry;
+		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) - small.words[i] - carry;
 
-		dst.words.push_back(static_cast<uint32_t>(tmp & wordmax));
-		carry = (tmp & ~wordmax) >> 32;
-		//std::cerr << "BIG " << big.words[i] << "\n";
-		//std::cerr << "SML " << small.words[i] << "\n";
-		//std::cerr << "TMP " << tmp << "\n";
-		//std::cerr << "RES " << dst.words[i] << "\n";
-		//std::cerr << "CAR " << carry << "\n";
+		dst.words.push_back(tmp & wordmax);
+		carry = (tmp & ~wordmax) && 1;
 		++i;
 	}
-	//std::cerr << "CAR " << carry << "\n";
 	while (i < big.words.size())
 	{
 		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) - carry;
 
 		dst.words.push_back(tmp & wordmax);
-		carry = (tmp & ~wordmax) >> 32;
+		carry = (tmp & ~wordmax) && 1;
 		++i;
-	}//si le carry s'etend sur le n+1 probleme
-	if (carry)//FIXME result is fucked if carry and a < b
+	}
+	if (carry)
 	{
-		//std::cerr << "YES";
 		size_t	i = 0;
 
 		while (i < dst.words.size() && carry)//word full of 0 ?
