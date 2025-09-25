@@ -157,6 +157,30 @@ FatInt	FatInt::operator-(const FatInt &n) const
 	return res;
 }
 
+FatInt	FatInt::operator*(const FatInt &n) const
+{
+	//TODO karatsuba, fft
+	FatInt	res;
+	size_t	i = 0;
+	uint64_t	carry = 0;
+
+	//reserve
+	res.neg = neg ^ n.neg;
+	//n is 1 word long
+
+	while (i < words.size())
+	{
+		uint64_t	tmp = static_cast<uint64_t>(words[i]) * n.words[0] + carry;
+
+		res.words.push_back(tmp & wordmax);
+		carry = (tmp & ~wordmax) >> 32;
+		++i;
+	}
+	if (carry)
+		res.words.push_back(carry);
+	return res;
+}
+
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
 	o << '(' << f.words.size() << ')';//

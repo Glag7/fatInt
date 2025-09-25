@@ -48,8 +48,8 @@ void	runTest(int n = -1)
 
 int	main(int argc, char **argv)
 {
-	//std::cout << FatInt(9223372036854775807LL) - (FatInt(9223372036854775807LL) + FatInt(2)) << "\n";
-	//return 0;
+	std::cout << FatInt(5000000100) * FatInt(2) << "\n";
+	return 0;
 	FatInt	a(3);
 	FatInt	b(9223372036854775807);
 	FatInt	c(1);

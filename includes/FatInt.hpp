@@ -33,6 +33,7 @@ class	FatInt
 		//FatInt	operator~() const;
 		FatInt	operator+(const FatInt &n) const;
 		FatInt	operator-(const FatInt &n) const;
+		FatInt	operator*(const FatInt &n) const;
 		//FatInt	operator-(const FatInt &n);//*/% + bool
 		
 		friend std::ostream	&operator<<(std::ostream &o, const FatInt &f);
