@@ -17,7 +17,7 @@ class	FatInt
 		bool					sign;
 
 		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
-		static void	usub(FatInt &dst, const FatInt &a, const FatInt &b);
+		static void	sub(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	umul_naive(FatInt &dst, const FatInt &a, const FatInt &b);
 		
 		void	trim();

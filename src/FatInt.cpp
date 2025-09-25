@@ -47,7 +47,7 @@ void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
 		uint64_t	tmp = static_cast<uint64_t>(small.words[i]) + big.words[i] + carry;
 
 		dst.words.push_back(tmp & wordmax);
-		carry = (tmp & ~wordmax) >> 32;
+		carry = (tmp & ~wordmax) && 1;
 		++i;
 	}
 	while (i < big.words.size())
@@ -55,14 +55,14 @@ void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
 		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) + carry;
 
 		dst.words.push_back(tmp & wordmax);
-		carry = (tmp & ~wordmax) >> 32;
+		carry = (tmp & ~wordmax) && 1;
 		++i;
 	}
 	if (carry)
 		dst.words.push_back(1);
 }
 
-void	FatInt::usub(FatInt &dst, const FatInt &a, const FatInt &b)
+void	FatInt::sub(FatInt &dst, const FatInt &a, const FatInt &b)
 {
 	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
 	const FatInt	&big = (&small == &a) ? b : a;
@@ -131,7 +131,7 @@ FatInt	FatInt::operator+(const FatInt &n) const
 
 	if (sign != n.sign)
 	{
-		usub(res, *this, n);
+		sub(res, *this, n);
 	}
 	else
 	{
@@ -147,7 +147,7 @@ FatInt	FatInt::operator-(const FatInt &n) const
 
 	if (sign == n.sign)
 	{
-		usub(res, *this, n);
+		sub(res, *this, n);
 	}
 	else
 	{
