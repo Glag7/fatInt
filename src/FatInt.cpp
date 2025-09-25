@@ -157,27 +157,56 @@ FatInt	FatInt::operator-(const FatInt &n) const
 	return res;
 }
 
-FatInt	FatInt::operator*(const FatInt &n) const
+void	FatInt::umul_naive(FatInt &dst, const FatInt &a, const FatInt &b)
 {
-	//TODO karatsuba, fft
-	FatInt	res;
-	size_t	i = 0;
-	uint64_t	carry = 0;
+	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
+	const FatInt	&big = (&small == &a) ? b : a;
+	size_t			i = 0;
+	uint32_t		carry = 0;
 
-	//reserve
-	res.sign = sign ^ n.sign;
-	//n is 1 word long
-
-	while (i < words.size())
+	dst.words.reserve(big.words.size() * 2);
+	while (i < big.words.size())
 	{
-		uint64_t	tmp = static_cast<uint64_t>(words[i]) * n.words[0] + carry;
+		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) * small.words[0] + carry;
 
-		res.words.push_back(tmp & wordmax);
+		dst.words.push_back(tmp & wordmax);
 		carry = (tmp & ~wordmax) >> 32;
 		++i;
 	}
 	if (carry)
-		res.words.push_back(carry);
+		dst.words.push_back(carry);
+	for (size_t j = 1; j < small.words.size(); ++j)
+	{
+		i = 0;
+		while (i < big.words.size())
+		{
+			uint64_t	tmp = static_cast<uint64_t>(big.words[i]) * small.words[0] + carry;
+			
+			if (j < dst.words.size())
+			{
+				tmp += dst.words[i];
+				dst.words[j] = tmp & wordmax;
+			}
+			else
+				dst.words.push_back(tmp & wordmax);
+			carry = (tmp & ~wordmax) >> 32;
+			++i;
+		}
+		if (carry)
+			dst.words.push_back(carry);
+	}
+}
+
+//TODO karatsuba, fft
+FatInt	FatInt::operator*(const FatInt &n) const
+{
+	if ((words.size() == 1 && words[0] == 0) || (n.words.size() == 1 && n.words[0] == 0))
+		return FatInt(0);
+
+	FatInt	res;
+
+	res.sign = sign ^ n.sign;
+	umul_naive(res, *this, n);
 	return res;
 }
 
