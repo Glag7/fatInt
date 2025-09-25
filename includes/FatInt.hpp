@@ -14,7 +14,7 @@ class	FatInt
 		FatInt();
 	
 		std::vector<uint32_t>	words;
-		bool					neg;
+		bool					sign;
 
 		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	usub(FatInt &dst, const FatInt &a, const FatInt &b);

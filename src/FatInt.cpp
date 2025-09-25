@@ -4,7 +4,7 @@ uint64_t	FatInt::wordmax = (1ULL << 32) - 1;
 
 FatInt::FatInt() :
 	words{},
-	neg(0)
+	sign(0)
 {
 }
 
@@ -12,8 +12,8 @@ FatInt::FatInt(int64_t n)
 {
 	uint64_t	un;
 
-	neg = n < 0;
-	un = neg ? -n : n;
+	sign = n < 0;
+	un = sign ? -n : n;
 	words.push_back(un & wordmax);
 	if (un & ~wordmax)
 		words.push_back(un >> 32);
@@ -105,9 +105,9 @@ void	FatInt::usub(FatInt &dst, const FatInt &a, const FatInt &b)
 		}
 		if (carry)
 			dst.words.push_back(carry);
-		dst.neg = true;
+		dst.sign = true;
 	}
-	dst.neg ^= (&small == &a) ^ a.neg;
+	dst.sign ^= (&small == &a) ^ a.sign;
 	dst.trim();
 }
 
@@ -115,7 +115,7 @@ FatInt	FatInt::operator-() const
 {
 	FatInt	res = *this;
 
-	res.neg = !neg;
+	res.sign = !sign;
 	return res;
 }
 
@@ -129,13 +129,13 @@ FatInt	FatInt::operator+(const FatInt &n) const
 {
 	FatInt			res;
 
-	if (neg != n.neg)
+	if (sign != n.sign)
 	{
 		usub(res, *this, n);
 	}
 	else
 	{
-		res.neg = neg;
+		res.sign = sign;
 		uadd(res, *this, n);
 	}
 	return res;
@@ -145,13 +145,13 @@ FatInt	FatInt::operator-(const FatInt &n) const
 {
 	FatInt			res;
 
-	if (neg == n.neg)
+	if (sign == n.sign)
 	{
 		usub(res, *this, n);
 	}
 	else
 	{
-		res.neg = neg;
+		res.sign = sign;
 		uadd(res, *this, n);
 	}
 	return res;
@@ -165,7 +165,7 @@ FatInt	FatInt::operator*(const FatInt &n) const
 	uint64_t	carry = 0;
 
 	//reserve
-	res.neg = neg ^ n.neg;
+	res.sign = sign ^ n.sign;
 	//n is 1 word long
 
 	while (i < words.size())
@@ -184,7 +184,7 @@ FatInt	FatInt::operator*(const FatInt &n) const
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
 	o << '(' << f.words.size() << ')';//
-	if (f.neg)
+	if (f.sign)
 		o << '-';
 	//garbage
 	if (f.words.size() == 1)
