@@ -33,7 +33,7 @@ FatInt::FatInt(const std::string &s) :
 	{
 		if (count == 9)
 		{
-			*this = *this * 1000000000 + num;
+			*this = *this * 1000000000 + num;//TODO, *=, +=, * for uint32_t ?
 			count = 0;
 			num = 0;
 		}
