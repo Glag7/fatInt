@@ -210,6 +210,42 @@ FatInt	FatInt::operator*(const FatInt &n) const
 	return res;
 }
 
+void	FatInt::udiv_word(FatInt &dst, const FatInt &num, uint32_t div)
+{
+	FatInt		qt;
+	FatInt		rm(num);
+	uint32_t	carry = 0;
+	size_t		i = num.words.size();
+
+	//FIXME reserve + put at the end ?
+	while (i-- != 0)
+	{
+		uint64_t	tmp = (static_cast<uint64_t>(carry) << 32) | num.words[i];
+
+	 	uint64_t	huh = tmp / div;
+
+		qt.words.insert(qt.words.begin(), huh);
+		carry = tmp - huh * div;
+	}
+	dst = qt;
+	//trim rm ?
+}
+
+//TODO manage 0 (?), long div, newton
+FatInt	FatInt::operator/(const FatInt &n) const
+{
+	FatInt	res;
+	
+	res.sign = sign ^ n.sign;
+	if (n.words.size() == 1 && n.words[0] != 0)
+		udiv_word(res, *this, n.words[0]);
+	else
+	{
+		//yes
+	}
+	return res;
+}
+
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
 	o << '(' << f.words.size() << ')';//

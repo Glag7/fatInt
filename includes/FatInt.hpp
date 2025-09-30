@@ -19,6 +19,7 @@ class	FatInt
 		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	sub(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	umul_naive(FatInt &dst, const FatInt &a, const FatInt &b);
+		static void	udiv_word(FatInt &dst, const FatInt &num, uint32_t div);
 		
 		void	trim();
 
@@ -35,6 +36,7 @@ class	FatInt
 		FatInt	operator+(const FatInt &n) const;
 		FatInt	operator-(const FatInt &n) const;
 		FatInt	operator*(const FatInt &n) const;
+		FatInt	operator/(const FatInt &n) const;
 		//FatInt	operator-(const FatInt &n);//*/% + bool
 		
 		friend std::ostream	&operator<<(std::ostream &o, const FatInt &f);
