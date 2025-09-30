@@ -210,10 +210,8 @@ FatInt	FatInt::operator*(const FatInt &n) const
 	return res;
 }
 
-void	FatInt::udiv_word(FatInt &dst, const FatInt &num, uint32_t div)
-{
-	FatInt		qt;
-	FatInt		rm(num);
+void	FatInt::udiv_word(FatInt &qt, FatInt &rm, const FatInt &num, uint32_t div)
+{//XXX
 	uint32_t	carry = 0;
 	size_t		i = num.words.size();
 
@@ -227,23 +225,46 @@ void	FatInt::udiv_word(FatInt &dst, const FatInt &num, uint32_t div)
 		qt.words.insert(qt.words.begin(), huh);
 		carry = tmp - huh * div;
 	}
-	dst = qt;
+	rm = carry;
 	//trim rm ?
 }
 
 //TODO manage 0 (?), long div, newton
 FatInt	FatInt::operator/(const FatInt &n) const
 {
-	FatInt	res;
+	FatInt	res, foo;
 	
 	res.sign = sign ^ n.sign;
 	if (n.words.size() == 1 && n.words[0] != 0)
-		udiv_word(res, *this, n.words[0]);
+		udiv_word(res, foo, *this, n.words[0]);
 	else
 	{
 		//yes
 	}
 	return res;
+}
+
+FatInt	FatInt::operator%(const FatInt &n) const
+{
+	FatInt	res, foo;
+	
+	res.sign = sign ^ n.sign;//modulo or remainder ? not the same
+	if (n.words.size() == 1 && n.words[0] != 0)
+		udiv_word(foo, res, *this, n.words[0]);
+	else
+	{
+		//yes
+	}
+	return res;
+}
+
+std::string	FatInt::tostring()
+{
+	std::string	s;
+
+	s.reserve(words.size() * 10 + 1);//9.63 is enough
+
+	return s;
 }
 
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
