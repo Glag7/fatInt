@@ -49,6 +49,24 @@ FatInt::FatInt(const std::string &s) :
 	sign = minus;
 }
 
+FatInt::FatInt(const FatInt &f) :
+	words(f.words),
+	sign(f.sign)
+{
+}
+
+FatInt::FatInt(FatInt &&f) : sign(f.sign)
+{
+	words = std::move(f.words);
+	f.sign = false;
+}
+
+void	FatInt::operator=(const FatInt &n)
+{
+	sign = n.sign;
+	words = n.words;
+}
+
 void	FatInt::trim()
 {
 	auto end = words.end();

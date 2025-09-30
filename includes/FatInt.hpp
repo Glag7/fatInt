@@ -26,9 +26,11 @@ class	FatInt
 
 	public:
 		FatInt(int64_t n);
-		FatInt(const std::string &s);//move copy etc
+		FatInt(const std::string &s);
+		FatInt(const FatInt &f);
+		FatInt(FatInt &&f);
 
-		//operator=(const FatInt &n);
+		void	operator=(const FatInt &n);
 		//unary -, ++, etc
 		FatInt	operator-() const;
 		FatInt	operator~() const;
