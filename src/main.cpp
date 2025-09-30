@@ -7,7 +7,7 @@
 #define DIV 4
 
 // ADDSUB | MUL etc
-#define MODE (MUL | 0)
+#define MODE (ADDSUB | 0)
 
 std::vector<std::pair<FatInt, FatInt>>	tests;
 

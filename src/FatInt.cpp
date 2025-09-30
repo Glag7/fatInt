@@ -264,9 +264,9 @@ std::string	FatInt::tostring() const
 	FatInt	cpy = *this;
 	std::string	s;
 
+	if (cpy.words.size() == 1 && cpy.words[0] == 0)
+		return "0";
 	s.reserve(words.size() * 10 + 1);//9.63 is enough
-	if (cpy.sign)
-		s.push_back('-');
 	while (!(cpy.words.size() == 1 && cpy.words[0] == 0))
 	{
 		std::string	tmp = std::to_string((cpy % 1000000000).words[0]);
@@ -277,6 +277,8 @@ std::string	FatInt::tostring() const
 			s = tmp + s;
 		//std::cout << "|||" << cpy << "|||";
 	}
+	if (cpy.sign)
+		s.insert(s.begin(), '-');
 	return s;
 }
 
