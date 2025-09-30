@@ -226,7 +226,7 @@ void	FatInt::udiv_word(FatInt &qt, FatInt &rm, const FatInt &num, uint32_t div)
 		carry = tmp - huh * div;
 	}
 	rm = carry;
-	//trim rm ?
+	qt.trim();//weird
 }
 
 //TODO manage 0 (?), long div, newton
@@ -258,17 +258,32 @@ FatInt	FatInt::operator%(const FatInt &n) const
 	return res;
 }
 
-std::string	FatInt::tostring()
+#include <iostream>
+std::string	FatInt::tostring() const
 {
+	FatInt	cpy = *this;
 	std::string	s;
 
 	s.reserve(words.size() * 10 + 1);//9.63 is enough
-
+	if (cpy.sign)
+		s.push_back('-');
+	while (!(cpy.words.size() == 1 && cpy.words[0] == 0))
+	{
+		std::string	tmp = std::to_string((cpy % 1000000000).words[0]);
+		cpy = cpy / 1000000000;
+		if (!(cpy.words.size() == 1 && cpy.words[0] == 0))
+			s = (std::string(9 - tmp.size(), '0') + tmp) + s;
+		else
+			s = tmp + s;
+		//std::cout << "|||" << cpy << "|||";
+	}
 	return s;
 }
 
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
+	o << f.tostring();
+	return o;
 	o << '(' << f.words.size() << ')';//
 	if (f.sign)
 		o << '-';

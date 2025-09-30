@@ -69,13 +69,8 @@ void	runTest(int n = -1)
 
 int	main(int argc, char **argv)
 {
-	std::cout << FatInt(43) / FatInt(6) << "\n";
-	std::cout << FatInt(43) % FatInt(6) << "\n";
-	std::cout << FatInt(6) / FatInt(42) << "\n";
-	std::cout << FatInt(6) % FatInt(42) << "\n";
-	std::cout << FatInt(48e9 + 34) / FatInt(6) << "\n";
-	std::cout << FatInt(48e9 + 34) % FatInt(6) << "\n";
-	return 0;
+	//std::cout << FatInt(8000000000).tostring() << "\n";
+	//return 0;
 	FatInt	a(3);
 	FatInt	b(9223372036854775807);
 	FatInt	c(1);

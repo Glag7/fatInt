@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <string>
 
+//todo macro iszero
 class	FatInt
 {
 	private:
@@ -40,7 +41,7 @@ class	FatInt
 		FatInt	operator%(const FatInt &n) const;
 		//FatInt	operator-(const FatInt &n);//*/% + bool
 
-		std::string	tostring();
+		std::string	tostring() const;
 		
 		friend std::ostream	&operator<<(std::ostream &o, const FatInt &f);
 };
