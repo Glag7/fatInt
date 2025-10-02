@@ -1,16 +1,13 @@
 #include "FatInt.hpp"
 
-#include <iostream>
 FatInt::FatInt() :
 	words{},
 	sign(false)
 {
-	std::cout << "empty\n";
 }
 
 FatInt::FatInt(int64_t n)
 {
-	std::cout << "int\n";
 	uint64_t	un;
 
 	sign = n < 0;
@@ -57,12 +54,10 @@ FatInt::FatInt(const FatInt &f) :
 	words(f.words),
 	sign(f.sign)
 {
-	std::cout << "cpy\n";
 }
 
 FatInt::FatInt(FatInt &&f) : sign(f.sign)
 {
-	std::cout << "mv\n";
 	words = std::move(f.words);
 	f.sign = false;
 }
