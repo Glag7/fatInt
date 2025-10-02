@@ -18,6 +18,23 @@ void	FatInt::trim()
 	words.erase(start, end);
 }
 
+void	FatInt::uadd_word(FatInt &a, uint32_t b)
+{
+	size_t			i = 0;
+	uint32_t		carry = b;
+
+	while (carry && i < a.words.size())
+	{
+		uint64_t	tmp = static_cast<uint64_t>(a.words[i]) + carry;
+
+		a.words[i] = tmp & wordmax;
+		carry = (tmp & ~wordmax) && 1;
+		++i;
+	}
+	if (carry)
+		a.words.push_back(1);
+}
+
 void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
 {
 	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
@@ -141,22 +158,21 @@ FatInt	FatInt::operator-(const FatInt &n) const
 	return res;
 }
 
-void	FatInt::umul_word(FatInt &dst, const FatInt &a, uint32_t &b)
+void	FatInt::umul_word(FatInt &a, uint32_t b)
 {
 	size_t			i = 0;
 	uint32_t		carry = 0;
 
-	dst.words.reserve(a.words.size() + 1);
 	while (i < a.words.size())
 	{
 		uint64_t	tmp = static_cast<uint64_t>(a.words[i]) * b + carry;
 
-		dst.words.push_back(tmp & wordmax);
+		a.words[i] = tmp & wordmax;
 		carry = (tmp & ~wordmax) >> 32;
 		++i;
 	}
 	if (carry)
-		dst.words.push_back(carry);
+		a.words.push_back(carry);
 }
 
 void	FatInt::umul_naive(FatInt &dst, const FatInt &a, const FatInt &b)
