@@ -18,6 +18,11 @@ void	FatInt::trim()
 	words.erase(start, end);
 }
 
+bool	FatInt::is_zero() const
+{
+	return words.size() == 1 && words[0] == 0;
+}
+
 void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
 {
 	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
@@ -200,13 +205,13 @@ FatInt	FatInt::operator/(const FatInt &n) const
 {
 	FatInt	res, foo;
 	
-	res.sign = sign ^ n.sign;
-	if (n.words.size() == 1 && n.words[0] != 0)
-		udiv_word(res, foo, *this, n.words[0]);
-	else
-	{
-		//yes
-	}
+//	res.sign = sign ^ n.sign;
+//	if (n.words.size() == 1 && n.words[0] != 0)
+//		udiv_word(res, foo, *this, n.words[0]);
+//	else
+//	{
+//		//yes
+//	}
 	return res;
 }
 
@@ -214,44 +219,47 @@ FatInt	FatInt::operator%(const FatInt &n) const
 {
 	FatInt	res, foo;
 	
-	res.sign = sign ^ n.sign;//modulo or remainder ? not the same
-	if (n.words.size() == 1 && n.words[0] != 0)
-		udiv_word(foo, res, *this, n.words[0]);
-	else
-	{
-		//yes
-	}
+//	res.sign = sign ^ n.sign;//modulo or remainder ? not the same
+//	if (n.words.size() == 1 && n.words[0] != 0)
+//		udiv_word(foo, res, *this, n.words[0]);
+//	else
+//	{
+//		//yes
+//	}
 	return res;
 }
 
-#include <iostream>
-std::string	FatInt::tostring() const
+std::string	FatInt::to_string(const FatInt &f)
 {
-	FatInt	cpy = *this;
+	if (f.is_zero())
+		return "0";
+	
+	FatInt		cpy = f;
 	std::string	s;
 
-	if (cpy.words.size() == 1 && cpy.words[0] == 0)
-		return "0";
-	s.reserve(words.size() * 10 + 1);//9.63 is enough
-	while (!(cpy.words.size() == 1 && cpy.words[0] == 0))
+	s.reserve(f.words.size() * 10 + 1);//9.63 is enough
+	while (!cpy.is_zero())
 	{
-		std::string	tmp = std::to_string((cpy % 1000000000).words[0]);
-		cpy = cpy / 1000000000;
-		if (!(cpy.words.size() == 1 && cpy.words[0] == 0))
+		uint32_t	mod;
+
+		udiv_word(cpy, 1000000000, &mod);
+
+		std::string	tmp = std::to_string(mod);
+		if (!cpy.is_zero())
 			s = (std::string(9 - tmp.size(), '0') + tmp) + s;
 		else
 			s = tmp + s;
-		//std::cout << "|||" << cpy << "|||";
 	}
 	if (cpy.sign)
 		s.insert(s.begin(), '-');
 	return s;
 }
 
+#include <iostream>
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
 	std::cout << "YO\n";
-	o << f.tostring();
+	o << FatInt::to_string(f);
 	return o;
 	o << '(' << f.words.size() << ')';//
 	if (f.sign)
