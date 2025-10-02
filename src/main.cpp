@@ -69,7 +69,8 @@ void	runTest(int n = -1)
 
 int	main(int argc, char **argv)
 {
-	std::cout << FatInt(argv[1]) << "\n";
+	FatInt	f(argv[1]);
+	std::cout << f << "\n";
 	return 0;
 	FatInt	a(3);
 	FatInt	b(9223372036854775807);

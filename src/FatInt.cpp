@@ -255,10 +255,8 @@ std::string	FatInt::to_string(const FatInt &f)
 	return s;
 }
 
-#include <iostream>
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
-	std::cout << "YO\n";
 	o << FatInt::to_string(f);
 	return o;
 	o << '(' << f.words.size() << ')';//

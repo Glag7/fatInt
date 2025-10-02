@@ -17,7 +17,22 @@ void	FatInt::uadd_word(FatInt &a, uint32_t b)
 		a.words.push_back(1);
 }
 
-//TODO sub
+void	FatInt::usub_word(FatInt &a, uint32_t b)
+{
+	size_t			i = 0;
+	uint32_t		carry = b;
+
+	while (carry && i < a.words.size())
+	{
+		uint64_t	tmp = static_cast<uint64_t>(a.words[i]) - carry;
+
+		a.words[i] = tmp & wordmax;
+		carry = (tmp & ~wordmax) && 1;
+		++i;
+	}
+	if (carry)
+		a.words[0] = ~a.words[0] + 1;
+}
 
 void	FatInt::umul_word(FatInt &a, uint32_t b)
 {

@@ -19,8 +19,10 @@ class	FatInt
 		bool					sign;
 
 		static void	uadd_word(FatInt &a, uint32_t b);
+		static void	usub_word(FatInt &a, uint32_t b);
 		static void	umul_word(FatInt &a, uint32_t b);
 		static void	udiv_word(FatInt &num, uint32_t div, uint32_t *mod);
+
 		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	sub(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	umul_naive(FatInt &dst, const FatInt &a, const FatInt &b);
