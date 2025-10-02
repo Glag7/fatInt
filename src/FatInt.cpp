@@ -18,11 +18,6 @@ void	FatInt::trim()
 	words.erase(start, end);
 }
 
-bool	FatInt::is_zero() const
-{
-	return words.size() == 1 && words[0] == 0;
-}
-
 void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
 {
 	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
@@ -257,6 +252,7 @@ std::string	FatInt::to_string(const FatInt &f)
 
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
+	o << '(' << f.words.size() << ')';//
 	o << FatInt::to_string(f);
 	return o;
 	o << '(' << f.words.size() << ')';//

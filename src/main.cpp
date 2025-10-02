@@ -70,7 +70,16 @@ void	runTest(int n = -1)
 int	main(int argc, char **argv)
 {
 	FatInt	f(argv[1]);
+	FatInt	g(argv[2]);
+	
 	std::cout << f << "\n";
+	std::cout << g << "\n";
+	std::cout << "==" << (f == g) << "\n";
+	std::cout << "!=" << (f != g) << "\n";
+	std::cout << ">" << (f > g) << "\n";
+	std::cout << "<" << (f < g) << "\n";
+	std::cout << ">=" << (f >= g) << "\n";
+	std::cout << "<=" << (f <= g) << "\n";
 	return 0;
 	FatInt	a(3);
 	FatInt	b(9223372036854775807);
