@@ -37,20 +37,28 @@ void	FatInt::umul_word(FatInt &a, uint32_t b)
 }
 
 void	FatInt::udiv_word(FatInt &num, uint32_t div, uint32_t *mod)
-{//XXX
-	uint32_t	carry = 0;
+{
+	uint32_t	carry = 0, fac = 0;
 	size_t		i = num.words.size();
 
-	//FIXME reserve + put at the end ?
+	while (fac == 0 && i-- != 0)
+	{
+		uint64_t	tmp = (static_cast<uint64_t>(carry) << 32) | num.words[i];
+	 	
+		fac = tmp / div;
+		num.words[i] = fac;
+		carry = tmp - fac * div;
+	}
+	if (!fac)
+		++i;
+	num.words.erase(num.words.begin() + i + 1, num.words.end());
 	while (i-- != 0)
 	{
 		uint64_t	tmp = (static_cast<uint64_t>(carry) << 32) | num.words[i];
-
-	 	uint64_t	huh = tmp / div;
-
-		num.words[i] = huh;
-		carry = tmp - huh * div;
+	 	
+		fac = tmp / div;
+		num.words[i] = fac;
+		carry = tmp - fac * div;
 	}
 	*mod = carry;
-	num.trim();//weird
 }
