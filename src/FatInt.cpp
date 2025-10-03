@@ -121,11 +121,30 @@ void	FatInt::sub(FatInt &dst, const FatInt &a, const FatInt &b)
 	dst.trim();
 }
 
+FatInt	FatInt::operator+() const
+{
+	return *this;
+}
+
 FatInt	FatInt::operator-() const
 {
-	FatInt	res = *this;
+	FatInt	res(*this);
 
 	res.sign = !sign;
+	return res;
+}
+
+void	FatInt::invert()
+{
+	sign = !sign;
+}
+
+FatInt	FatInt::operator~() const
+{
+	FatInt	res(*this);
+
+	for (auto &&word : res.words)
+		word = ~word;
 	return res;
 }
 
@@ -278,20 +297,10 @@ std::string	FatInt::to_string(const FatInt &f)
 
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
-	o << '(' << f.words.size() << ')';//
+	#ifdef FATINT_DEBUG
+		o << '(' << f.words.size() << ')';
+	#endif
 	o << FatInt::to_string(f);
-	return o;
-	o << '(' << f.words.size() << ')';//
-	if (f.sign)
-		o << '-';
-	//garbage
-	if (f.words.size() == 1)
-		o << f.words[0];
-	else if (f.words.size() == 2)
-		o << ((static_cast<uint64_t>(f.words[1]) << 32) | f.words[0]);
-	else
-		o << "too big";
-	//
 	return o;
 }
 

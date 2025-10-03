@@ -42,11 +42,26 @@ class	FatInt
 		//needs to make a copy -> garbage
 		FatInt	operator++(int) = delete;
 		FatInt	operator--(int) = delete;
-		//unary -, ++, etc
+
+		FatInt	operator+() const;//useless
 		FatInt	operator-() const;
+		void	invert();
+
+		explicit	operator bool() const;
+		bool		operator!();
+		bool		operator&&(bool b) const;
+		bool		operator||(bool b) const;
+		
 		FatInt	operator~() const;
 		void	flip();
-		//FatInt	operator~() const;
+		//FatInt	operator>>(uint64_t n) const;
+		//FatInt	operator<<(uint64_t n) const;
+		//FatInt	operator&(const FatInt &f) const;
+		//FatInt	operator^(const FatInt &f) const;
+		//FatInt	operator|(const FatInt &f) const;
+		
+		//+= -= *= /= %= <<= >>= &= ^= |=
+		//op to flip the sign ? abs ?
 		FatInt	operator+(const FatInt &n) const;
 		FatInt	operator-(const FatInt &n) const;
 		FatInt	operator*(const FatInt &n) const;
