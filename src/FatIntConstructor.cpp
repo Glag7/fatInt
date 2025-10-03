@@ -21,7 +21,8 @@ FatInt::FatInt(const std::string &s) :
 	words{0},
 	sign(false)
 {
-	static uint32_t	pow10[] = {10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
+	static const uint32_t	pow10[]
+		= {10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
 	size_t			i = s[0] == '+' || s[0] == '-';
 	size_t			count = 0;
 	uint32_t		num = 0;
