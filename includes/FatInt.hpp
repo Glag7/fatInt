@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <string>
 
+#define FATINT_DEBUG 0
+
 class	FatInt
 {
 	private:
@@ -20,6 +22,8 @@ class	FatInt
 		static void	usub_word(FatInt &a, uint32_t b);
 		static void	umul_word(FatInt &a, uint32_t b);
 		static void	udiv_word(FatInt &num, uint32_t div, uint32_t *mod);
+
+		static void	uand(FatInt &a, const FatInt &b);
 		
 		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	sub(FatInt &dst, const FatInt &a, const FatInt &b);
@@ -56,9 +60,9 @@ class	FatInt
 		void	flip();
 		//FatInt	operator>>(uint64_t n) const;
 		//FatInt	operator<<(uint64_t n) const;
-		//FatInt	operator&(const FatInt &f) const;
-		//FatInt	operator^(const FatInt &f) const;
-		//FatInt	operator|(const FatInt &f) const;
+		FatInt	operator&(const FatInt &f) const;
+		FatInt	operator^(const FatInt &f) const;
+		FatInt	operator|(const FatInt &f) const;
 		
 		//+= -= *= /= %= <<= >>= &= ^= |=
 		//op to flip the sign ? abs ?
@@ -77,6 +81,7 @@ class	FatInt
 		//FatInt	operator-(const FatInt &n);//*/% + bool
 
 		static std::string	to_string(const FatInt &f);
+		static std::string	to_string(const FatInt &f, unsigned base);
 		
 		friend std::ostream	&operator<<(std::ostream &o, const FatInt &f);
 };
