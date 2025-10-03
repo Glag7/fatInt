@@ -8,6 +8,32 @@ void	FatInt::operator=(const FatInt &n)
 	words = n.words;
 }
 
+FatInt	&FatInt::operator++()
+{
+	if (sign)
+	{
+		if (this->is_zero())
+			sign = false;
+		usub_word(*this, 1);
+	}
+	else
+		uadd_word(*this, 1);
+	return *this;
+}
+
+FatInt	&FatInt::operator--()
+{
+	if (!sign)
+	{
+		if (this->is_zero())
+			sign = true;
+		usub_word(*this, 1);
+	}
+	else
+		uadd_word(*this, 1);
+	return *this;
+}
+
 void	FatInt::trim()
 {
 	auto end = words.end();

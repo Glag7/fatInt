@@ -36,6 +36,12 @@ class	FatInt
 		FatInt(FatInt &&f);
 
 		void	operator=(const FatInt &n);
+
+		FatInt	&operator++();
+		FatInt	&operator--();
+		//needs to make a copy -> garbage
+		FatInt	operator++(int) = delete;
+		FatInt	operator--(int) = delete;
 		//unary -, ++, etc
 		FatInt	operator-() const;
 		FatInt	operator~() const;
