@@ -269,61 +269,6 @@ FatInt	FatInt::operator%(const FatInt &n) const
 	return res;
 }
 
-std::string	FatInt::to_string(const FatInt &f)
-{
-	if (f.is_zero())
-		return "0";
-	
-	FatInt		cpy = f;
-	std::string	s;
-
-	s.reserve(f.words.size() * 10 + 1);//9.63 is enough
-	while (!cpy.is_zero())
-	{
-		uint32_t	mod;
-
-		udiv_word(cpy, 1000000000, &mod);
-
-		std::string	tmp = std::to_string(mod);
-		if (!cpy.is_zero())
-			s = (std::string(9 - tmp.size(), '0') + tmp) + s;
-		else
-			s = tmp + s;
-	}
-	if (cpy.sign)
-		s.insert(s.begin(), '-');
-	return s;
-}
-
-std::string	FatInt::to_string(const FatInt &f, unsigned base)
-{
-	static const size_t logs[] = {0, 0, 32, 21, 16, 14, 13, 12, 11, 11, 10, 10, 9, 9, 9, 9, 8};
-	static const char	hex[] = "0123456789ABCDEF";
-
-	if (f.is_zero())
-		return "0";
-	
-	FatInt		cpy = f;
-	std::string	s;
-
-	s.reserve(f.words.size() * 10 + 1);//9.63 is enough
-	while (!cpy.is_zero())
-	{
-		uint32_t	mod;
-
-		udiv_word(cpy, 1000000000, &mod);
-
-		std::string	tmp = std::to_string(mod);
-		if (!cpy.is_zero())
-			s = (std::string(9 - tmp.size(), '0') + tmp) + s;
-		else
-			s = tmp + s;
-	}
-	if (cpy.sign)
-		s.insert(s.begin(), '-');
-	return s;
-}
-
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
 	#if FATINT_DEBUG == 1
