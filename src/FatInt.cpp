@@ -297,7 +297,7 @@ std::string	FatInt::to_string(const FatInt &f)
 
 std::string	FatInt::to_string(const FatInt &f, unsigned base)
 {
-	static const size_t logs[] = [0, 0, 32, 21, 16, 14, 13, 12, 11, 11, 10, 10, 9, 9, 9, 9, 8];
+	static const size_t logs[] = {0, 0, 32, 21, 16, 14, 13, 12, 11, 11, 10, 10, 9, 9, 9, 9, 8};
 	static const char	hex[] = "0123456789ABCDEF";
 
 	if (f.is_zero())
