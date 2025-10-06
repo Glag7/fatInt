@@ -271,7 +271,7 @@ FatInt	FatInt::operator%(const FatInt &n) const
 
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
-	#if FATINT_DEBUG == 1
+	#ifdef FATINT_DEBUG
 		o << '(' << f.words.size() << ')';
 	#endif
 	o << FatInt::to_string(f);

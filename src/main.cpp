@@ -67,21 +67,30 @@ void	runTest(int n = -1)
 	}
 }
 
-//TODO to_string_base
 //TODO bit logic
 //TODO write decent tests + python tester
 //TODO % remain or mod ?
 int	main(int argc, char **argv)
 {
 	FatInt	f(argv[1]);
-	FatInt	g(argv[2]);
 	
 	std::cout << f << "\n";
-	std::cout << g << "\n";
-	std::cout << !!f << "\n";
-	std::cout << !f << "\n";
-	std::cout << (f && g) << "\n";
-	std::cout << (f || g) << "\n";
+	std::cout << FatInt::to_string(f, 2) << "\n";
+	std::cout << FatInt::to_string(f, 3) << "\n";
+	std::cout << FatInt::to_string(f, 4) << "\n";
+	std::cout << FatInt::to_string(f, 5) << "\n";
+	std::cout << FatInt::to_string(f, 6) << "\n";
+	std::cout << FatInt::to_string(f, 7) << "\n";
+	std::cout << FatInt::to_string(f, 8) << "\n";
+	std::cout << FatInt::to_string(f, 9) << "\n";
+	std::cout << FatInt::to_string(f, 10) << "\n";
+	std::cout << FatInt::to_string(f, 11) << "\n";
+	std::cout << FatInt::to_string(f, 12) << "\n";
+	std::cout << FatInt::to_string(f, 13) << "\n";
+	std::cout << FatInt::to_string(f, 14) << "\n";
+	std::cout << FatInt::to_string(f, 15) << "\n";
+	std::cout << FatInt::to_string(f, 16) << "\n";
+	std::cout << FatInt::to_string(f, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") << "\n";
 	return 0;
 	FatInt	a(3);
 	FatInt	b(9223372036854775807);

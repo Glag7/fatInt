@@ -6,7 +6,8 @@
 #include <cstdint>
 #include <string>
 
-#define FATINT_DEBUG 0
+//#define FATINT_DEBUG
+//#define FATINT_YES_MINUS
 
 class	FatInt
 {
@@ -82,6 +83,7 @@ class	FatInt
 
 		static std::string	to_string(const FatInt &f);
 		static std::string	to_string(const FatInt &f, unsigned base);
+		static std::string	to_string(const FatInt &f, const std::string &base);
 		
 		friend std::ostream	&operator<<(std::ostream &o, const FatInt &f);
 };
