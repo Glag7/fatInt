@@ -25,6 +25,8 @@ class	FatInt
 		static void	udiv_word(FatInt &num, uint32_t div, uint32_t *mod);
 
 		static void	uand(FatInt &a, const FatInt &b);
+		static void	uor(FatInt &a, const FatInt &b);
+		static void	uxor(FatInt &a, const FatInt &b);
 		
 		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	sub(FatInt &dst, const FatInt &a, const FatInt &b);
