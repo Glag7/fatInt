@@ -139,21 +139,6 @@ void	FatInt::invert()
 	sign = !sign;
 }
 
-FatInt	FatInt::operator~() const
-{
-	FatInt	res(*this);
-
-	for (auto &&word : res.words)
-		word = ~word;
-	return res;
-}
-
-void	FatInt::flip()
-{
-	for (auto &&word : words)
-		word = ~word;
-}
-
 FatInt	FatInt::operator+(const FatInt &n) const
 {
 	FatInt			res;
