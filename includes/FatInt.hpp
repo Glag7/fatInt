@@ -27,6 +27,7 @@ class	FatInt
 		static void	uand(FatInt &a, const FatInt &b);
 		static void	uor(FatInt &a, const FatInt &b);
 		static void	uxor(FatInt &a, const FatInt &b);
+		static void	ushift(FatInt &f, int64_t n);
 		
 		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	sub(FatInt &dst, const FatInt &a, const FatInt &b);
@@ -61,11 +62,14 @@ class	FatInt
 		
 		FatInt	operator~() const;
 		void	flip();
-		//FatInt	operator>>(uint64_t n) const;
-		//FatInt	operator<<(uint64_t n) const;
+		FatInt	operator>>(const FatInt &f) const;
+		FatInt	operator<<(const FatInt &f) const;
 		FatInt	operator&(const FatInt &f) const;
-		FatInt	operator^(const FatInt &f) const;
 		FatInt	operator|(const FatInt &f) const;
+		FatInt	operator^(const FatInt &f) const;
+		void	operator&=(const FatInt &f);
+		void	operator|=(const FatInt &f);
+		void	operator^=(const FatInt &f);
 		
 		//+= -= *= /= %= <<= >>= &= ^= |=
 		//op to flip the sign ? abs ?
@@ -81,7 +85,6 @@ class	FatInt
 		bool	operator>(const FatInt &n) const;
 		bool	operator<=(const FatInt &n) const;
 		bool	operator<(const FatInt &n) const;
-		//FatInt	operator-(const FatInt &n);//*/% + bool
 
 		static std::string	to_string(const FatInt &f);
 		static std::string	to_string(const FatInt &f, unsigned base);
