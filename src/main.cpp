@@ -74,7 +74,7 @@ void	runTest(int n = -1)
 int	main(int argc, char **argv)
 {
 	FatInt	f(argv[1]);
-
+	
 	std::cout << FatInt::to_string(f, 2) << "\n";
 	std::cout << FatInt::to_string((f << 32), 2) << "\n";
 	std::cout << FatInt::to_string((f << 33), 2) << "\n";
@@ -84,7 +84,6 @@ int	main(int argc, char **argv)
 	FatInt g = f << 64 << -33;
 	
 	std::cout << FatInt::to_string(g, 2) << "\n";
-	std::cout << FatInt::to_string((g << -1111), 2) << "\n";
 	
 	return 0;
 	FatInt	a(3);

@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <string>
 
-//#define FATINT_DEBUG
+#define FATINT_DEBUG
 //#define FATINT_YES_MINUS
 
 class	FatInt
@@ -27,7 +27,8 @@ class	FatInt
 		static void	uand(FatInt &a, const FatInt &b);
 		static void	uor(FatInt &a, const FatInt &b);
 		static void	uxor(FatInt &a, const FatInt &b);
-		static void	ushift(FatInt &f, int64_t n);
+		static void	ushift_right(FatInt &f, uint64_t n);
+		static void	ushift_left(FatInt &f, uint64_t n);
 		
 		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
 		static void	sub(FatInt &dst, const FatInt &a, const FatInt &b);
@@ -47,11 +48,11 @@ class	FatInt
 
 		FatInt	&operator++();
 		FatInt	&operator--();
-		//needs to make a copy -> garbage
+		//needs to make a copy -> bad
 		FatInt	operator++(int) = delete;
 		FatInt	operator--(int) = delete;
 
-		FatInt	operator+() const;//useless
+		FatInt	operator+() const;//useless but why not
 		FatInt	operator-() const;
 		void	invert();
 
@@ -70,6 +71,8 @@ class	FatInt
 		void	operator&=(const FatInt &f);
 		void	operator|=(const FatInt &f);
 		void	operator^=(const FatInt &f);
+		void	operator>>=(const FatInt &f);
+		void	operator<<=(const FatInt &f);
 		
 		//+= -= *= /= %= <<= >>= &= ^= |=
 		//op to flip the sign ? abs ?
