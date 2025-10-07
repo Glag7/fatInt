@@ -88,7 +88,7 @@ std::string	FatInt::to_string(const FatInt &f, const std::string &base)
 	const uint32_t			size = base.size();
 
 	if (size < 2 || size > 255)
-		throw std::invalid_argument("base length must be between 2 and 16");
+		throw std::invalid_argument("base length must be between 2 and 255");
 	check_base(base);
 	if (f.is_zero())
 		return std::string(base[0], 1);
