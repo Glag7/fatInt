@@ -107,7 +107,7 @@ FatInt	FatInt::operator^(const FatInt &f) const
 FatInt	FatInt::operator>>(const FatInt &f) const
 {
 	uint64_t	shift = (f.words.size() == 1) ? f.words[0]
-		: static_cast<uint64_t>(f.words[1]) | f.words[0];
+		: (static_cast<uint64_t>(f.words[1]) << 32) | f.words[0];
 
 	if (f.words.size() > 2 || shift > (1ULL << 63) - 1)
 		throw std::invalid_argument("shift too large");
@@ -124,7 +124,7 @@ FatInt	FatInt::operator>>(const FatInt &f) const
 FatInt	FatInt::operator<<(const FatInt &f) const
 {
 	uint64_t	shift = (f.words.size() == 1) ? f.words[0]
-		: static_cast<uint64_t>(f.words[1]) | f.words[0];
+		: (static_cast<uint64_t>(f.words[1]) << 32) | f.words[0];
 
 	if (f.words.size() > 2 || shift > (1ULL << 63) - 1)
 		throw std::invalid_argument("shift too large");
@@ -162,7 +162,7 @@ void	FatInt::operator^=(const FatInt &f)
 void	FatInt::operator>>=(const FatInt &f)
 {
 	uint64_t	shift = (f.words.size() == 1) ? f.words[0]
-		: static_cast<uint64_t>(f.words[1]) | f.words[0];
+		: (static_cast<uint64_t>(f.words[1]) << 32) | f.words[0];
 
 	if (f.words.size() > 2 || shift > (1ULL << 63) - 1)
 		throw std::invalid_argument("shift too large");
@@ -175,7 +175,7 @@ void	FatInt::operator>>=(const FatInt &f)
 void	FatInt::operator<<=(const FatInt &f)
 {
 	uint64_t	shift = (f.words.size() == 1) ? f.words[0]
-		: static_cast<uint64_t>(f.words[1]) | f.words[0];
+		: (static_cast<uint64_t>(f.words[1]) << 32) | f.words[0];
 
 	if (f.words.size() > 2 || shift > (1ULL << 63) - 1)
 		throw std::invalid_argument("shift too large");

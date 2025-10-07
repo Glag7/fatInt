@@ -68,7 +68,6 @@ void	runTest(int n = -1)
 }
 
 //TODO bit logic
-//TODO implicit int64 cast, add operators to take int64 and call normal operators
 //TODO write decent tests + python tester
 //TODO % remain or mod ?
 int	main(int argc, char **argv)
@@ -84,6 +83,7 @@ int	main(int argc, char **argv)
 	FatInt g = f << 64 << -33;
 	
 	std::cout << FatInt::to_string(g, 2) << "\n";
+	g <<= 11111111111;
 	
 	return 0;
 	FatInt	a(3);
