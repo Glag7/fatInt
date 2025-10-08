@@ -237,7 +237,7 @@ FatInt	FatInt::operator/(const FatInt &n) const
 //	{
 //		//yes
 //	}
-	return res;
+	return 0;//XXX
 }
 
 FatInt	FatInt::operator%(const FatInt &n) const
@@ -251,7 +251,7 @@ FatInt	FatInt::operator%(const FatInt &n) const
 //	{
 //		//yes
 //	}
-	return res;
+	return 0;//XXX
 }
 void	FatInt::operator+=(const FatInt &n)
 {

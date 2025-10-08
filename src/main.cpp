@@ -1,45 +1,9 @@
 #include <iostream>
 #include <vector>
 #include "FatInt.hpp"
+#include "FatIntTest.hpp"
 
-#define ADDSUB 1
-#define MUL 2
-#define DIV 4
-
-// ADDSUB | MUL etc
-#define MODE (ADDSUB | 0)
-
-std::vector<std::pair<FatInt, FatInt>>	tests;
-
-void	testAddSub(const FatInt &a, const FatInt &b)
-{
-	std::cout << "add\n";
-	std::cout << a << " + " << b << " = " << a + b << "\n";
-	std::cout << a << " + " << -b << " = " << a + -b << "\n";
-	std::cout << -a << " + " << b << " = " << -a + b << "\n";
-	std::cout << -a << " + " << -b << " = " << -a + -b << "\n";
-	std::cout << "sub\n";
-	std::cout << a << " - " << b << " = " << a - b << "\n";
-	std::cout << a << " - " << -b << " = " << a - -b << "\n";
-	std::cout << -a << " - " << b << " = " << -a - b << "\n";
-	std::cout << -a << " - " << -b << " = " << -a - -b << "\n";
-	std::cout << "sub rev\n";
-	std::cout << b << " - " << a << " = " << b - a << "\n";
-	std::cout << b << " - " << -a << " = " << b - -a << "\n";
-	std::cout << -b << " - " << a << " = " << -b - a << "\n";
-	std::cout << -b << " - " << -a << " = " << -b - -a << "\n";
-}
-
-void	testMul(const FatInt &a, const FatInt &b)
-{
-	std::cout << "mul\n";
-	std::cout << a << " * " << b << " = " << a * b << "\n";
-}
-
-void	addTest(const FatInt &a, const FatInt &b)
-{
-	tests.push_back(std::make_pair(a, b));
-}
+std::vector<FatIntTest>	tests;
 
 void	runTest(int n = -1)
 {
@@ -48,57 +12,114 @@ void	runTest(int n = -1)
 		for (size_t i = 0; i < tests.size(); ++i)
 		{
 			std::cout << "TEST " << i << "\n";
-			
-			if (MODE & ADDSUB)
-				testAddSub(tests[i].first, tests[i].second);
-			if (MODE & MUL)
-				testMul(tests[i].first, tests[i].second);
+			tests[i].run();
 			std::cout << "\n";
 		}
 	}
 	else
 	{
 		std::cout << "TEST " << n << "\n";
-		if (MODE & ADDSUB)
-			testAddSub(tests[n].first, tests[n].second);
-		if (MODE & MUL)
-			testMul(tests[n].first, tests[n].second);
+		tests[n].run();
 		std::cout << "\n";
 	}
 }
 
+void	addTest(const FatInt &a, const FatInt &b)
+{
+	tests.push_back(FatIntTest(a, b));
+}
+
+void	mmmm_tests()
+{
+	FatInt	maxint32(9223372036854775807);//this is the maxint64
+	FatInt	maxint322(9223372036854775809ULL);
+	FatInt	big("12345678912345678998745632198765432155544462215");
+	
+	addTest(0, 0);
+	addTest(FatInt("-0"), 0);
+	addTest(0, FatInt("-0"));
+	addTest(FatInt("-0"), FatInt("-0"));
+
+	addTest(0, 1);
+	addTest(1, 0);
+	addTest(1, 1);
+	addTest(-1, 1);
+	addTest(1, -1);
+	addTest(-1, -1);
+
+	addTest(1, 34);
+	tests.rbegin()->flags.rshift  = true;
+	tests.rbegin()->flags.lshift  = true;
+	addTest(FatInt("111111111111111111111111"), -34);
+	tests.rbegin()->flags.rshift  = true;
+	tests.rbegin()->flags.lshift  = true;
+	addTest(-1, -3);
+	tests.rbegin()->flags.rshift  = true;
+	tests.rbegin()->flags.lshift  = true;
+	addTest(FatInt("-111111111111111111111111"), 3);
+	tests.rbegin()->flags.rshift  = true;
+	tests.rbegin()->flags.lshift  = true;
+	addTest(FatInt("123456789123456789123456789"), 12345);
+	tests.rbegin()->flags.rshift  = true;
+	tests.rbegin()->flags.lshift  = true;
+	addTest(FatInt("123456789123456789123456789"), -123456);
+	tests.rbegin()->flags.rshift  = true;
+	tests.rbegin()->flags.lshift  = true;
+
+	addTest(2 | 64 | (2ULL << 62), 1 | 2 | (2ULL << 62));
+	addTest(FatInt("295811224608098629060044695716103590786339687135372992239556207050657350796238924261053837248378050186443647759070955993120820899330381760937027212482840944941362110665443775183495726811929203861182015218323892077355983393191208928867652655993602487903113708549402668624521100611794270340232766099317098048887493809023127398253860618783252858976162599942806745196064145410"), 0);
+	addTest(FatInt("295811224608098629060044695716103590786339687135372992239556207050657350796238924261053837248378050186443647759070955993120820899330381760937027212482840944941362110665443775183495726811929203861182015218323892077355983393191208928867652655993602487903113708549402668624521100611794270340232766099317098048887493809023127398253860618783252858976162599942806745196064145410"), FatInt("295811224608098629060044695716103590786339687135372992239556207050657350796238924261053837248378050186443647759070955993120820899330381760937027212482840944941362110665443775183495726811929203861182015218323892077355983393191208928867652655993602487903113708549402668624521100611794270340232766099317098048887493809023127398253860618772619035009883272959576288713821388801"));
+
+	addTest(3, 1);
+	addTest(-3, 1);
+	addTest(3, -1);
+	addTest(-3, -1);
+	addTest(maxint32, maxint32);
+	addTest(maxint32, -maxint32);
+	addTest(-maxint32, maxint32);
+	addTest(-maxint32, -maxint32);
+	addTest(maxint322, maxint32);
+	addTest(maxint322, -maxint32);
+	addTest(-maxint322, maxint32);
+	addTest(-maxint322, -maxint32);
+	addTest(maxint32, maxint322);
+	addTest(maxint32, -maxint322);
+	addTest(-maxint32, maxint322);
+	addTest(-maxint32, -maxint322);
+	addTest(3e9, 2e9);
+	addTest(big, 2e9);
+	addTest(big, -2e9);
+	addTest(-big, 2e9);
+	addTest(-big, -2e9);
+	addTest(2e9, big);
+	addTest(-2e9, big);
+	addTest(2e9, -big);
+	addTest(-2e9, -big);
+	addTest(FatInt("18446744073709551615"), 1);
+	addTest(FatInt("-18446744073709551615"), 1);
+	addTest(FatInt("18446744073709551615"), -1);
+	addTest(FatInt("-18446744073709551615"), -1);
+	addTest(1, FatInt("18446744073709551615"));
+	addTest(-1, FatInt("18446744073709551615"));
+	addTest(1, -FatInt("18446744073709551615"));
+	addTest(-1, -FatInt("18446744073709551615"));
+	addTest(big, FatInt("18446744073709551615"));
+	addTest(-big, FatInt("18446744073709551615"));
+	addTest(big, -FatInt("18446744073709551615"));
+	addTest(-big, -FatInt("18446744073709551615"));
+	addTest(FatInt("18446744073709551615"), big);
+	addTest(FatInt("-18446744073709551615"), big);
+	addTest(FatInt("18446744073709551615"), -big);
+	addTest(FatInt("-18446744073709551615"), -big);
+}
+
 //TODO write decent tests + python tester
+//TODO hex constructor ?
 int	main(int argc, char **argv)
 {
-	FatInt	f(argv[1]);
-	
-	std::cout << FatInt::to_string(f, 2) << "\n";
-	std::cout << FatInt::to_string((f << 32), 2) << "\n";
-	std::cout << FatInt::to_string((f << 33), 2) << "\n";
-	std::cout << FatInt::to_string((f << -1), 2) << "\n";
-	std::cout << FatInt::to_string((f << -30), 2) << "\n";
-
-	FatInt g = f << 64 << -33;
-	
-	std::cout << FatInt::to_string(g, 2) << "\n";
-	g <<= 11111111111;
-	
-	return 0;
-	FatInt	a(3);
-	FatInt	b(9223372036854775807);
-	FatInt	c(1);
-
-	addTest(a, c);
-	addTest(b, c);
-	addTest(b, b);
-	addTest(b, b + 2);
-	addTest(b, b + 1);
-	addTest(3e9, 2e9);
-	addTest((1ULL << 32) - 1, 1);
-	addTest((1ULL << 32) - 1, (1ULL << 32) - 1);
+	mmmm_tests();
 	if (argc == 1)
 		runTest();
 	for (int i = 1; i < argc; ++i)
-		runTest(std::strtol(argv[i], NULL, 0));
-		
+		runTest(std::strtol(argv[i], NULL, 0));	
 }
