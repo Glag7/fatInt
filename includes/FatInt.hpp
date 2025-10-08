@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <string>
 
-#define FATINT_DEBUG
+//#define FATINT_DEBUG
 //#define FATINT_YES_MINUS
 
 class	FatInt
@@ -48,7 +48,7 @@ class	FatInt
 
 		FatInt	&operator++();
 		FatInt	&operator--();
-		//needs to make a copy -> bad
+		//would need to make a copy with current implementation -> bad
 		FatInt	operator++(int) = delete;
 		FatInt	operator--(int) = delete;
 
@@ -74,8 +74,7 @@ class	FatInt
 		void	operator>>=(const FatInt &f);
 		void	operator<<=(const FatInt &f);
 		
-		//+= -= *= /= %= <<= >>= &= ^= |=
-		//op to flip the sign ? abs ?
+		//+= -= *= /= %=
 		FatInt	operator+(const FatInt &n) const;
 		FatInt	operator-(const FatInt &n) const;
 		FatInt	operator*(const FatInt &n) const;

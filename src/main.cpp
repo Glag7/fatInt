@@ -67,9 +67,7 @@ void	runTest(int n = -1)
 	}
 }
 
-//TODO bit logic
 //TODO write decent tests + python tester
-//TODO % remain or mod ?
 int	main(int argc, char **argv)
 {
 	FatInt	f(argv[1]);
