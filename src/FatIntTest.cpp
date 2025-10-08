@@ -30,7 +30,6 @@ void	FatIntTest::run_boolop()
 void	FatIntTest::run_rshift()
 {
 	FatInt	cpy = a;
-	std::cout << (cpy >> b) << "\n";
 	std::cout << "rshift " << a << " " << b << " " << (a >> b) << " ";
 	cpy >>= b;
 	std::cout << cpy << "\n";
