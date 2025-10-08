@@ -74,12 +74,16 @@ class	FatInt
 		void	operator>>=(const FatInt &f);
 		void	operator<<=(const FatInt &f);
 		
-		//+= -= *= /= %=
 		FatInt	operator+(const FatInt &n) const;
 		FatInt	operator-(const FatInt &n) const;
 		FatInt	operator*(const FatInt &n) const;
 		FatInt	operator/(const FatInt &n) const;
 		FatInt	operator%(const FatInt &n) const;
+		void	operator+=(const FatInt &n);
+		void	operator-=(const FatInt &n);
+		void	operator*=(const FatInt &n);
+		void	operator/=(const FatInt &n);
+		void	operator%=(const FatInt &n);
 
 		bool	operator==(const FatInt &n) const;
 		bool	operator!=(const FatInt &n) const;

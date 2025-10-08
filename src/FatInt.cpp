@@ -253,6 +253,25 @@ FatInt	FatInt::operator%(const FatInt &n) const
 //	}
 	return res;
 }
+void	FatInt::operator+=(const FatInt &n)
+{
+}
+
+void	FatInt::operator-=(const FatInt &n)
+{
+}
+
+void	FatInt::operator*=(const FatInt &n)
+{
+}
+
+void	FatInt::operator/=(const FatInt &n)
+{
+}
+
+void	FatInt::operator%=(const FatInt &n)
+{
+}
 
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)
 {
