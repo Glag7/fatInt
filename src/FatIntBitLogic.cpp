@@ -55,7 +55,7 @@ void	FatInt::ushift_right(FatInt &f, uint64_t n)
 	uint64_t	digit_shift = 32 - n % 32;
 	uint32_t	carry = 0;
 
-	if (word_shift > f.words.size())
+	if (word_shift >= f.words.size())
 	{
 		f.words = {0};
 		return;
