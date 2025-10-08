@@ -5,8 +5,8 @@
 
 struct	FatIntTest
 {
-	FatInt	a;
-	FatInt	b;
+	const FatInt	a;
+	const FatInt	b;
 	struct
 	{
 		bool	preop = true;

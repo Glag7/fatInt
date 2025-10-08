@@ -11,14 +11,14 @@ void	runTest(int n = -1)
 	{
 		for (size_t i = 0; i < tests.size(); ++i)
 		{
-			std::cout << "TEST " << i << "\n";
+			std::cout << "TEST " << i << " " << tests[i].a << " " << tests[i].b << "\n";
 			tests[i].run();
 			std::cout << "\n";
 		}
 	}
 	else
 	{
-		std::cout << "TEST " << n << "\n";
+		std::cout << "TEST " << n << " " << tests[n].a << " " << tests[n].b << "\n";
 		tests[n].run();
 		std::cout << "\n";
 	}

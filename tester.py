@@ -1,0 +1,70 @@
+import sys
+from termcolor import colored
+
+test = 0
+
+for line in sys.stdin:
+	words = line.split()
+	if len(words) == 0:
+		continue
+	match words[0]:
+		case "TEST":
+			if len(words) != 4:
+				print(colored("TEST: wrong number of args", "red"))
+				test = -1
+				continue
+			test = int(words[1])
+			print("TEST", words[1] + ":", words[2], words[3])
+
+		case "preop":
+			print("preop: ", end='')
+			if len(words) != 6:
+				print(colored("wrong number of args", "red"))
+				continue
+			num = int(words[1])
+			expected = [num + 1, num, num - 1, num]
+			if ([int(x) for x in words[2::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[2::])
+			else:
+				print(colored("OK", "green"))
+		
+		case "unary":
+			print("unary: ", end='')
+			if len(words) != 5:
+				print(colored("wrong number of args", "red"))
+				continue
+			num = int(words[1])
+			expected = [num, -num, -num]
+			if ([int(x) for x in words[2::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[2::])
+			else:
+				print(colored("OK", "green"))
+		
+		case "boolop":
+			print("boolop: ", end='')
+			if len(words) != 7:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			expected = [int(not num1), int(not num2), int(num1 and num2), int(num1 or num2)]
+			if ([int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			else:
+				print(colored("OK", "green"))
+		
+		case "bitop":
+			print("bitop: ", end='')
+			if len(words) != 11:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			expected = [~num1, num1 & num2, num1 | num2, num1 ^ num2] * 2
+			if ([int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			else:
+				print(colored("OK", "green"))
+
+		case _:
+			print(colored("Unknown word: " + words[0], "red"))

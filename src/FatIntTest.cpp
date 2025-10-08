@@ -9,7 +9,8 @@ FatIntTest::FatIntTest(const FatInt &a, const FatInt &b) :
 
 void	FatIntTest::run_preop()
 {
-	std::cout << "preop " << a << " " << ++a << " " << --a << " " << --a << " " << ++a << "\n";
+	FatInt	cpy = a;
+	std::cout << "preop " << cpy << " " << ++cpy << " " << --cpy << " " << --cpy << " " << ++cpy << "\n";
 }
 
 void	FatIntTest::FatIntTest::run_unary()
