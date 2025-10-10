@@ -1,6 +1,8 @@
 import sys
 from termcolor import colored
 
+sys.set_int_max_str_digits(100000)
+
 test = 0
 
 def	fake_not(n : int):
@@ -84,6 +86,44 @@ for line in sys.stdin:
 			num1 = int(words[1])
 			num2 = int(words[2])
 			expected = [fake_not(num1), fake_and(num1, num2), fake_or(num1, num2), fake_xor(num1, num2)] * 2
+			if ([int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			else:
+				print(colored("OK", "green"))
+
+		case "lshift":
+			print("lshift: ", end='')
+			if len(words) != 5:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			if (num2 >= 0):
+				expected = [abs(num1) << num2]
+			else:
+				expected = [abs(num1) >> -num2]
+			if (num1 < 0):
+				expected[0] *= -1
+			expected *= 2
+			if ([int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			else:
+				print(colored("OK", "green"))
+
+		case "rshift":
+			print("rshift: ", end='')
+			if len(words) != 5:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			if (num2 >= 0):
+				expected = [abs(num1) >> num2]
+			else:
+				expected = [abs(num1) << -num2]
+			if (num1 < 0):
+				expected[0] *= -1
+			expected *= 2
 			if ([int(x) for x in words[3::]] != expected):
 				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
 			else:
