@@ -75,6 +75,8 @@ FatInt	FatInt::operator~() const
 {
 	FatInt	res(*this);
 
+	if (res.is_zero())
+		res.sign = false;
 	for (auto &&word : res.words)
 		word = ~word;
 	return res;
@@ -140,6 +142,8 @@ FatInt	FatInt::operator<<(const FatInt &f) const
 
 void	FatInt::flip()
 {
+	if (this->is_zero())
+		sign = false;
 	for (auto &&word : words)
 		word = ~word;
 }
