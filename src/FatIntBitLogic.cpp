@@ -45,14 +45,14 @@ void	FatInt::ushift_left(FatInt &f, uint64_t n)
 	}
 	if (carry)
 		f.words.push_back(carry);
-	if (word_shift && word_shift - !!carry)
-		f.words.insert(f.words.begin(), word_shift - !!carry, 0);
+	if (word_shift)
+		f.words.insert(f.words.begin(), word_shift, 0);
 }
 
 void	FatInt::ushift_right(FatInt &f, uint64_t n)
 {
 	uint64_t	word_shift = n / 32;
-	uint64_t	digit_shift = 32 - n % 32;
+	uint64_t	digit_shift = n % 32;
 	uint32_t	carry = 0;
 
 	if (word_shift >= f.words.size())
@@ -64,7 +64,8 @@ void	FatInt::ushift_right(FatInt &f, uint64_t n)
 		f.words.erase(f.words.begin(), f.words.begin() + word_shift);
 	for (auto it = f.words.rbegin(); it != f.words.rend(); ++it)
 	{
-		uint64_t	tmp = (static_cast<uint64_t>(*it) <<  digit_shift) | carry;
+		uint64_t	tmp = ((static_cast<uint64_t>(carry) << (digit_shift)) | *it)
+							<< (32 - digit_shift);
 
 		carry = tmp & wordmax;
 		*it = tmp >> 32;
