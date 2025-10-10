@@ -86,6 +86,7 @@ FatInt	FatInt::operator&(const FatInt &f) const
 {
 	FatInt	res(*this);
 
+	res.sign &= f.sign;
 	uand(res, f);
 	return res;
 }
@@ -94,6 +95,7 @@ FatInt	FatInt::operator|(const FatInt &f) const
 {
 	FatInt	res(*this);
 
+	res.sign |= f.sign;
 	uor(res, f);
 	return res;
 }
@@ -102,6 +104,7 @@ FatInt	FatInt::operator^(const FatInt &f) const
 {
 	FatInt	res(*this);
 
+	res.sign ^= f.sign;
 	uxor(res, f);
 	return res;
 }
@@ -150,16 +153,19 @@ void	FatInt::flip()
 		
 void	FatInt::operator&=(const FatInt &f)
 {
+	sign &= f.sign;
 	uand(*this, f);
 }
 
 void	FatInt::operator|=(const FatInt &f)
 {
+	sign |= f.sign;
 	uor(*this, f);
 }
 
 void	FatInt::operator^=(const FatInt &f)
 {
+	sign ^= f.sign;
 	uxor(*this, f);
 }
 
