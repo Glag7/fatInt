@@ -129,5 +129,18 @@ for line in sys.stdin:
 			else:
 				print(colored("OK", "green"))
 
+		case "cmp":
+			print("cmp: ", end='')
+			if len(words) != 9:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			expected = [int(num1 == num2), int(num1 != num2), int(num1 >= num2), int(num1 > num2), int(num1 <= num2), int(num1 < num2)]
+			if ([int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			else:
+				print(colored("OK", "green"))
+		
 		case _:
 			print(colored("Unknown word: " + words[0], "red"))
