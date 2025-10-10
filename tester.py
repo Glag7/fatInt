@@ -3,6 +3,29 @@ from termcolor import colored
 
 test = 0
 
+def	fake_not(n : int):
+	nwords = 1
+	while (abs(n) > 2 ** (nwords * 32)):
+		nwords += 1
+	if (n < 0):
+		return 2 ** (nwords * 32) * -1 + abs(n) + 1
+	return 2 ** (nwords * 32) - abs(n) - 1
+
+def	fake_and(a : int, b : int):
+	if (a < 0 and b < 0):
+		return -(abs(a) & abs(b))
+	return abs(a) & abs(b)
+
+def	fake_or(a : int, b : int):
+	if (a < 0 or b < 0):
+		return -(abs(a) | abs(b))
+	return abs(a) | abs(b)
+
+def	fake_xor(a : int, b : int):
+	if ((a < 0) ^ (b < 0)):
+		return -(abs(a) ^ abs(b))
+	return abs(a) ^ abs(b)
+
 for line in sys.stdin:
 	words = line.split()
 	if len(words) == 0:
@@ -60,7 +83,7 @@ for line in sys.stdin:
 				continue
 			num1 = int(words[1])
 			num2 = int(words[2])
-			expected = [~num1, num1 & num2, num1 | num2, num1 ^ num2] * 2
+			expected = [fake_not(num1), fake_and(num1, num2), fake_or(num1, num2), fake_xor(num1, num2)] * 2
 			if ([int(x) for x in words[3::]] != expected):
 				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
 			else:
