@@ -125,9 +125,9 @@ void	FatIntTest::run_string()
 		<< " " << FatInt::to_string(a, 13)
 		<< " " << FatInt::to_string(a, 14)
 		<< " " << FatInt::to_string(a, 15)
-		<< " " << FatInt::to_string(a, 16)
-		<< " " << FatInt::to_string(a, "skib|d1amonguS5IGMA")
-		<< " " << FatInt::to_string(a, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+		<< " " << FatInt::to_string(a, 16) << "\n";
+	//	<< " " << FatInt::to_string(a, "skib|d1amonguS5IGMA")
+	//	<< " " << FatInt::to_string(a, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 }
 
 void	FatIntTest::run()
