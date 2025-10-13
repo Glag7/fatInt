@@ -8,6 +8,7 @@ void	FatInt::uand(FatInt &a, const FatInt &b)
 		a.words[i] &= b.words[i];
 	if (&small != &a)
 		a.words.erase(a.words.begin() + small.words.size(), a.words.end());
+	a.trim();
 }
 
 void	FatInt::uor(FatInt &a, const FatInt &b)
@@ -28,6 +29,7 @@ void	FatInt::uxor(FatInt &a, const FatInt &b)
 		a.words[i] ^= b.words[i];
 	if (&small == &a)
 		a.words.insert(a.words.end(), b.words.begin() + a.words.size(), b.words.end());
+	a.trim();
 }
 
 void	FatInt::ushift_left(FatInt &f, uint64_t n)
