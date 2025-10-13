@@ -91,7 +91,7 @@ std::string	FatInt::to_string(const FatInt &f, const std::string &base)
 		throw std::invalid_argument("base length must be between 2 and 255");
 	check_base(base);
 	if (f.is_zero())
-		return std::string(base[0], 1);
+		return std::string(1, base[0]);
 	
 	FatInt		cpy = f;
 	std::string	s;
