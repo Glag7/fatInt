@@ -30,6 +30,8 @@ void	FatInt::usub_word(FatInt &a, uint32_t b)
 		carry = (tmp & ~wordmax) && 1;
 		++i;
 	}
+	if (*a.words.rbegin() == 0 && a.words.size() > 1)
+		a.words.erase(a.words.end() - 1);
 	if (carry)
 		a.words[0] = ~a.words[0] + 1;
 }
