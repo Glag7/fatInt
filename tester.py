@@ -29,11 +29,18 @@ def	fake_xor(a : int, b : int):
 	return abs(a) ^ abs(b)
 
 def ntobase(n : int, base : str):
+	if (n == 0):
+		return str(base[0])
+	neg = n < 0
 	numstr = ""
+	if (neg):
+		n = -n
 	lenbase = len(base)
 	while (n):
-		numstr += base[n % lenbase]
-		n /= lenbase
+		numstr = str(base[n % lenbase]) + numstr
+		n //= lenbase
+	if (neg):
+		numstr = "-" + numstr
 	return numstr
 
 for line in sys.stdin:
@@ -152,14 +159,16 @@ for line in sys.stdin:
 		
 		case "string":
 			print("string: ", end='')
-			if len(words) != 17:
+			if len(words) != 19:
 				print(colored("wrong number of args", "red"))
 				continue
 			num = int(words[1])
 			bases = "0123456789ABCDEF"
 			expected = [ntobase(num, "".join([bases[y] for y in range(i)])) for i in range(2, 17)]
-			if ([int(x) for x in words[3::]] != expected):
-				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			expected += [ntobase(num, "skib|d1amonguS5IGMA")]
+			expected += [ntobase(num, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")]
+			if ([x for x in words[2::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[2::])
 			else:
 				print(colored("OK", "green"))
 		
