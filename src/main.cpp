@@ -113,8 +113,8 @@ void	mmmm_tests()
 	addTest(FatInt("-18446744073709551615"), -big);
 }
 
-//TODO write decent tests + python tester
 //TODO hex constructor ?
+//TODO better string converter (no precompute + better string management)
 int	main(int argc, char **argv)
 {
 	mmmm_tests();

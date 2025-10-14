@@ -255,10 +255,12 @@ FatInt	FatInt::operator%(const FatInt &n) const
 }
 void	FatInt::operator+=(const FatInt &n)
 {
+	*this = *this + n;
 }
 
 void	FatInt::operator-=(const FatInt &n)
 {
+	*this = *this - n;
 }
 
 void	FatInt::operator*=(const FatInt &n)

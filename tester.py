@@ -1,6 +1,7 @@
 import sys
 from termcolor import colored
 
+#TODO: make this tester less bad at some point
 sys.set_int_max_str_digits(100000)
 
 test = 0
@@ -169,6 +170,73 @@ for line in sys.stdin:
 			expected += [ntobase(num, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")]
 			if ([x for x in words[2::]] != expected):
 				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[2::])
+			else:
+				print(colored("OK", "green"))
+		
+		case "add":
+			print("add: ", end='')
+			if len(words) != 5:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			expected = [num1 + num2] * 2
+			if ([int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			else:
+				print(colored("OK", "green"))
+		
+		case "sub":
+			print("sub: ", end='')
+			if len(words) != 5:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			expected = [num1 - num2] * 2
+			if ([int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			else:
+				print(colored("OK", "green"))
+		
+		case "mul":
+			print("mul: ", end='')
+			if len(words) != 5:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			expected = [num1 * num2] * 2
+			if ([int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			else:
+				print(colored("OK", "green"))
+		
+		case "div":
+			print("div: ", end='')
+			if len(words) != 5:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			if (num2):
+				expected = [num1 // num2] * 2
+			if (num2 != 0 and [int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
+			else:
+				print(colored("OK", "green"))
+		
+		case "remain":
+			print("remain: ", end='')
+			if len(words) != 5:
+				print(colored("wrong number of args", "red"))
+				continue
+			num1 = int(words[1])
+			num2 = int(words[2])
+			if (num2):
+				expected = [num1 % num2] * 2
+			if (num2 != 0 and [int(x) for x in words[3::]] != expected):
+				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
 			else:
 				print(colored("OK", "green"))
 		
