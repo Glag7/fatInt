@@ -113,8 +113,10 @@ void	mmmm_tests()
 	addTest(FatInt("-18446744073709551615"), -big);
 }
 
+//TODO add basic mul div remain
 //TODO hex constructor ?
 //TODO better string converter (no precompute + better string management)
+//TODO better tester
 int	main(int argc, char **argv)
 {
 	mmmm_tests();
