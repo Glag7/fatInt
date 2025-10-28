@@ -167,55 +167,33 @@ FatInt	FatInt::operator-(const FatInt &n) const
 	return res;
 }
 
-void	FatInt::umul_naive(FatInt &dst, const FatInt &a, const FatInt &b)
+void	FatInt::umul(FatInt &a, const FatInt &b)
 {
-	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
-	const FatInt	&big = (&small == &a) ? b : a;
-	size_t			i = 0;
-	uint32_t		carry = 0;
+	FatInt			dst = 0;
 
-	dst.words.reserve(big.words.size() * 2);
-	while (i < big.words.size())
+	dst.words.reserve(((a.words.size() > b.words.size()) ? a.words.size() : b.words.size()) * 2);
+	for (size_t j = 0; j < a.words.size(); ++j)
 	{
-		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) * small.words[0] + carry;
-
-		dst.words.push_back(tmp & wordmax);
-		carry = (tmp & ~wordmax) >> 32;
-		++i;
-	}
-	if (carry)
-		dst.words.push_back(carry);
-	for (size_t j = 1; j < small.words.size(); ++j)
-	{
-		i = 0;
-		while (i < big.words.size())
+		for (size_t i = 0; i < b.words.size(); ++i)
 		{
-			uint64_t	tmp = static_cast<uint64_t>(big.words[i]) * small.words[0] + carry;
-			
-			if (j < dst.words.size())
-			{
-				tmp += dst.words[i];
-				dst.words[j] = tmp & wordmax;
-			}
-			else
-				dst.words.push_back(tmp & wordmax);
-			carry = (tmp & ~wordmax) >> 32;
-			++i;
+			uint64_t	tmp = static_cast<uint64_t>(b.words[i]) * a.words[j];
+		
+			uadd(dst, FatInt(std::to_string(tmp)) << ((i + j) * 32));
 		}
-		if (carry)
-			dst.words.push_back(carry);
 	}
+	dst.sign = a.sign;
+	a = std::move(dst);
 }
 
 FatInt	FatInt::operator*(const FatInt &n) const
 {
-	if ((words.size() == 1 && words[0] == 0) || (n.words.size() == 1 && n.words[0] == 0))
+	if (this->is_zero() || n.is_zero())
 		return FatInt(0);
 
-	FatInt	res;
+	FatInt	res = *this;
 
-	res.sign = sign ^ n.sign;
-	umul_naive(res, *this, n);
+	res.sign ^= n.sign;
+	umul(res, n);
 	return res;
 }
 
@@ -266,6 +244,13 @@ void	FatInt::operator-=(const FatInt &n)
 
 void	FatInt::operator*=(const FatInt &n)
 {
+	if (this->is_zero() || n.is_zero())
+	{
+		*this = 0;
+		return;
+	}
+	sign ^= n.sign;
+	umul(*this, n);
 }
 
 void	FatInt::operator/=(const FatInt &n)

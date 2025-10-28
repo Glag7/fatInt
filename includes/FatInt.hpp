@@ -32,7 +32,7 @@ class	FatInt
 		
 		static void	uadd(FatInt &a, const FatInt &b);
 		static void	sub(FatInt &a, const FatInt &b);
-		static void	umul_naive(FatInt &dst, const FatInt &a, const FatInt &b);
+		static void	umul(FatInt &a, const FatInt &b);
 		
 		inline bool	is_zero() const {return words.size() == 1 && words[0] == 0;}
 		
