@@ -30,8 +30,8 @@ class	FatInt
 		static void	ushift_right(FatInt &f, uint64_t n);
 		static void	ushift_left(FatInt &f, uint64_t n);
 		
-		static void	uadd(FatInt &dst, const FatInt &a, const FatInt &b);
-		static void	sub(FatInt &dst, const FatInt &a, const FatInt &b);
+		static void	uadd(FatInt &a, const FatInt &b);
+		static void	sub(FatInt &a, const FatInt &b);
 		static void	umul_naive(FatInt &dst, const FatInt &a, const FatInt &b);
 		
 		inline bool	is_zero() const {return words.size() == 1 && words[0] == 0;}

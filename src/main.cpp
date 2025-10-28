@@ -115,6 +115,7 @@ void	mmmm_tests()
 
 //TODO add basic mul div remain
 //TODO hex constructor ?
+//TODO opt for large numbers
 //TODO better string converter (no precompute + better string management)
 //TODO better tester
 int	main(int argc, char **argv)

@@ -44,55 +44,61 @@ void	FatInt::trim()
 	words.erase(start, end);
 }
 
-void	FatInt::uadd(FatInt &dst, const FatInt &a, const FatInt &b)
+void	FatInt::uadd(FatInt &a, const FatInt &b)
 {
 	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
 	const FatInt	&big = (&small == &a) ? b : a;
 	size_t			i = 0;
 	uint32_t		carry = 0;
+	bool			asmall = &a == &small;
 
-	dst.words.reserve(big.words.size() + 1);
+	a.words.reserve(big.words.size() + 1);
 	while (i < small.words.size())
 	{
 		uint64_t	tmp = static_cast<uint64_t>(small.words[i]) + big.words[i] + carry;
 
-		dst.words.push_back(tmp & wordmax);
+		a.words[i] = (tmp & wordmax);
 		carry = (tmp & ~wordmax) && 1;
 		++i;
 	}
-	while (i < big.words.size())
+	if (asmall)
+		a.words.resize(big.words.size());
+	while (i < big.words.size() && (carry | asmall))
 	{
 		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) + carry;
 
-		dst.words.push_back(tmp & wordmax);
+		a.words[i] = (tmp & wordmax);
 		carry = (tmp & ~wordmax) && 1;
 		++i;
 	}
 	if (carry)
-		dst.words.push_back(1);
+		a.words.push_back(1);
 }
 
-void	FatInt::sub(FatInt &dst, const FatInt &a, const FatInt &b)
+void	FatInt::sub(FatInt &a, const FatInt &b)
 {
 	const FatInt	&small = (a.words.size() > b.words.size()) ? b : a;
 	const FatInt	&big = (&small == &a) ? b : a;
 	size_t			i = 0;
 	uint32_t		carry = 0;
+	bool			asmall = &a == &small;
 
-	dst.words.reserve(big.words.size());
+	a.words.reserve(big.words.size());
 	while (i < small.words.size())
 	{
 		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) - small.words[i] - carry;
 
-		dst.words.push_back(tmp & wordmax);
+		a.words[i] = (tmp & wordmax);
 		carry = (tmp & ~wordmax) && 1;
 		++i;
 	}
+	if (asmall)
+		a.words.resize(big.words.size());
 	while (i < big.words.size())
 	{
 		uint64_t	tmp = static_cast<uint64_t>(big.words[i]) - carry;
 
-		dst.words.push_back(tmp & wordmax);
+		a.words[i] = (tmp & wordmax);
 		carry = (tmp & ~wordmax) && 1;
 		++i;
 	}
@@ -100,25 +106,25 @@ void	FatInt::sub(FatInt &dst, const FatInt &a, const FatInt &b)
 	{
 		size_t	i = 0;
 
-		while (i < dst.words.size() && carry)
+		while (i < a.words.size() && carry)
 		{
-			uint64_t	tmp = static_cast<uint64_t>(~dst.words[i]) + 1;
+			uint64_t	tmp = static_cast<uint64_t>(~a.words[i]) + 1;
 			
-			dst.words[i] = static_cast<uint32_t>(tmp & wordmax);
+			a.words[i] = static_cast<uint32_t>(tmp & wordmax);
 			carry = (tmp & ~wordmax) && 1;
 			++i;
 		}
-		while (i < dst.words.size())
+		while (i < a.words.size())
 		{
-			dst.words[i] = ~dst.words[i];
+			a.words[i] = ~a.words[i];
 			++i;
 		}
 		if (carry)
-			dst.words.push_back(carry);
-		dst.sign = true;
+			a.words.push_back(carry);
+		a.sign ^= true;
 	}
-	dst.sign ^= (&small == &a) ^ a.sign;
-	dst.trim();
+	a.sign ^= (&small == &a);
+	a.trim();
 }
 
 FatInt	FatInt::operator+() const
@@ -141,33 +147,23 @@ void	FatInt::invert()
 
 FatInt	FatInt::operator+(const FatInt &n) const
 {
-	FatInt			res;
+	FatInt			res(*this);
 
 	if (sign != n.sign)
-	{
-		sub(res, *this, n);
-	}
+		sub(res, n);
 	else
-	{
-		res.sign = sign;
-		uadd(res, *this, n);
-	}
+		uadd(res, n);
 	return res;
 }
 
 FatInt	FatInt::operator-(const FatInt &n) const
 {
-	FatInt			res;
+	FatInt			res(*this);
 
 	if (sign == n.sign)
-	{
-		sub(res, *this, n);
-	}
+		sub(res, n);
 	else
-	{
-		res.sign = sign;
-		uadd(res, *this, n);
-	}
+		uadd(res, n);
 	return res;
 }
 
@@ -211,7 +207,6 @@ void	FatInt::umul_naive(FatInt &dst, const FatInt &a, const FatInt &b)
 	}
 }
 
-//TODO karatsuba, fft
 FatInt	FatInt::operator*(const FatInt &n) const
 {
 	if ((words.size() == 1 && words[0] == 0) || (n.words.size() == 1 && n.words[0] == 0))
@@ -255,12 +250,18 @@ FatInt	FatInt::operator%(const FatInt &n) const
 }
 void	FatInt::operator+=(const FatInt &n)
 {
-	*this = *this + n;
+	if (sign != n.sign)
+		sub(*this, n);
+	else
+		uadd(*this, n);
 }
 
 void	FatInt::operator-=(const FatInt &n)
 {
-	*this = *this - n;
+	if (sign == n.sign)
+		sub(*this, n);
+	else
+		uadd(*this, n);
 }
 
 void	FatInt::operator*=(const FatInt &n)
