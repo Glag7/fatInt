@@ -8,6 +8,7 @@
 
 //#define FATINT_DEBUG
 //#define FATINT_YES_MINUS
+//#define FATINT_ZERO_THROW
 
 class	FatInt
 {
@@ -33,12 +34,14 @@ class	FatInt
 		static void	uadd(FatInt &a, const FatInt &b);
 		static void	sub(FatInt &a, const FatInt &b);
 		static void	umul(FatInt &a, const FatInt &b);
+		static void	udiv(FatInt &q, FatInt &r, const FatInt &num, const FatInt &div);
 		
 		inline bool	is_zero() const {return words.size() == 1 && words[0] == 0;}
 		
 		void	trim();
 
 	public:
+		explicit FatInt(uint64_t n);
 		FatInt(int64_t n);
 		FatInt(const std::string &s);
 		FatInt(const FatInt &f);

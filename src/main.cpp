@@ -32,7 +32,7 @@ void	addTest(const FatInt &a, const FatInt &b)
 void	mmmm_tests()
 {
 	FatInt	maxint32(9223372036854775807);//this is the maxint64
-	FatInt	maxint322(9223372036854775809ULL);
+	FatInt	maxint322(static_cast<uint64_t>(9223372036854775809ULL));
 	FatInt	big("12345678912345678998745632198765432155544462215");
 	
 	addTest(0, 0);

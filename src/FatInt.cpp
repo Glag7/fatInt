@@ -178,7 +178,7 @@ void	FatInt::umul(FatInt &a, const FatInt &b)
 		{
 			uint64_t	tmp = static_cast<uint64_t>(b.words[i]) * a.words[j];
 		
-			uadd(dst, FatInt(std::to_string(tmp)) << ((i + j) * 32));
+			uadd(dst, FatInt(tmp) << ((i + j) * 32));//XXX kinda garbage but will do for now
 		}
 	}
 	dst.sign = a.sign;
@@ -188,7 +188,7 @@ void	FatInt::umul(FatInt &a, const FatInt &b)
 FatInt	FatInt::operator*(const FatInt &n) const
 {
 	if (this->is_zero() || n.is_zero())
-		return FatInt(0);
+		return 0;
 
 	FatInt	res = *this;
 
@@ -197,34 +197,42 @@ FatInt	FatInt::operator*(const FatInt &n) const
 	return res;
 }
 
+void	FatInt::udiv(FatInt &q, FatInt &r, const FatInt &num, const FatInt &div)
+{
+	if (div.is_zero())
+	{
+		#ifdef FATINT_ZERO_THROW
+		throw std::logic_error("division by 0");
+		#else
+		q = 0;
+		r = 0;
+		return;
+		#endif
+	}
+	q = 0;
+	r = num;
+	while (r > div)
+	{
+		//??
+	}
+}
 
-//TODO manage 0 (?), long div, newton
 FatInt	FatInt::operator/(const FatInt &n) const
 {
 	FatInt	res, foo;
 	
-//	res.sign = sign ^ n.sign;
-//	if (n.words.size() == 1 && n.words[0] != 0)
-//		udiv_word(res, foo, *this, n.words[0]);
-//	else
-//	{
-//		//yes
-//	}
-	return 0;//XXX
+	res.sign = sign ^ n.sign;
+	udiv(res, foo, *this, n);
+	return res;
 }
 
 FatInt	FatInt::operator%(const FatInt &n) const
 {
 	FatInt	res, foo;
 	
-//	res.sign = sign ^ n.sign;//modulo or remainder ? not the same
-//	if (n.words.size() == 1 && n.words[0] != 0)
-//		udiv_word(foo, res, *this, n.words[0]);
-//	else
-//	{
-//		//yes
-//	}
-	return 0;//XXX
+	res.sign = sign ^ n.sign;
+	udiv(foo, res, *this, n);
+	return foo;
 }
 void	FatInt::operator+=(const FatInt &n)
 {
@@ -255,10 +263,12 @@ void	FatInt::operator*=(const FatInt &n)
 
 void	FatInt::operator/=(const FatInt &n)
 {
+	*this = *this / n;
 }
 
 void	FatInt::operator%=(const FatInt &n)
 {
+	*this = *this % n;
 }
 
 std::ostream	&operator<<(std::ostream &o, const FatInt &f)

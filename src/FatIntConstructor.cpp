@@ -17,6 +17,13 @@ FatInt::FatInt(int64_t n)
 		words.push_back(un >> 32);
 }
 
+FatInt::FatInt(uint64_t un)
+{
+	words.push_back(un & wordmax);
+	if (un & ~wordmax)
+		words.push_back(un >> 32);
+}
+
 FatInt::FatInt(const std::string &s) :
 	words{0},
 	sign(false)
