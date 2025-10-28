@@ -48,6 +48,8 @@ for line in sys.stdin:
 	words = line.split()
 	if len(words) == 0:
 		continue
+	if (len(sys.argv) > 1 and words[0] not in sys.argv and words[0] != "TEST"):
+		continue
 	match words[0]:
 		case "TEST":
 			if len(words) != 4:
