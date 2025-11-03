@@ -6,17 +6,6 @@ FatInt::FatInt() :
 {
 }
 
-FatInt::FatInt(int64_t n)
-{
-	uint64_t	un;
-
-	sign = n < 0;
-	un = sign ? -n : n;
-	words.push_back(un & wordmax);
-	if (un & ~wordmax)
-		words.push_back(un >> 32);
-}
-
 FatInt::FatInt(uint64_t un)
 {
 	words.push_back(un & wordmax);

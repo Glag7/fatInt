@@ -41,8 +41,19 @@ class	FatInt
 		void	trim();
 
 	public:
+		template <typename Num,
+			typename std::enable_if<std::is_integral<Num>::value, int>::type = 0>
+		FatInt(Num n)
+		{
+			uint64_t	un;
+
+			sign = n < 0;
+			un = sign ? -n : n;
+			words.push_back(un & wordmax);
+			if (un & ~wordmax)
+				words.push_back(un >> 32);
+		}
 		explicit FatInt(uint64_t n);
-		FatInt(int64_t n);
 		FatInt(const std::string &s);
 		FatInt(const FatInt &f);
 		FatInt(FatInt &&f);

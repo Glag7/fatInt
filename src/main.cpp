@@ -90,15 +90,15 @@ void	mmmm_tests()
 	addTest(maxint32, -maxint322);
 	addTest(-maxint32, maxint322);
 	addTest(-maxint32, -maxint322);
-	addTest(3e9, 2e9);
-	addTest(big, 2e9);
-	addTest(big, -2e9);
-	addTest(-big, 2e9);
-	addTest(-big, -2e9);
-	addTest(2e9, big);
-	addTest(-2e9, big);
-	addTest(2e9, -big);
-	addTest(-2e9, -big);
+	addTest(3000000000, 2000000000);
+	addTest(big, 2000000000);
+	addTest(big, -2000000000);
+	addTest(-big, 2000000000);
+	addTest(-big, -2000000000);
+	addTest(2000000000, big);
+	addTest(-2000000000, big);
+	addTest(2000000000, -big);
+	addTest(-2000000000, -big);
 	addTest(FatInt("18446744073709551615"), 1);
 	addTest(FatInt("-18446744073709551615"), 1);
 	addTest(FatInt("18446744073709551615"), -1);
@@ -117,7 +117,6 @@ void	mmmm_tests()
 	addTest(FatInt("-18446744073709551615"), -big);
 }
 
-//FIXME fix garbage uint64 constructor
 //FIXME do something for negative 0 (always make it positive ?)
 //TODO add basic mul div remain
 //TODO hex constructor ?
