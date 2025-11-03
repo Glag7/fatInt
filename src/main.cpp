@@ -47,6 +47,10 @@ void	mmmm_tests()
 	addTest(1, -1);
 	addTest(-1, -1);
 
+	addTest(11, 3);
+	addTest(-11, 3);
+	addTest(-11, -3);
+	addTest(11, -3);
 	addTest(1, 34);
 	tests.rbegin()->flags.rshift  = true;
 	tests.rbegin()->flags.lshift  = true;
@@ -113,6 +117,8 @@ void	mmmm_tests()
 	addTest(FatInt("-18446744073709551615"), -big);
 }
 
+//FIXME fix garbage uint64 constructor
+//FIXME do something for negative 0 (always make it positive ?)
 //TODO add basic mul div remain
 //TODO hex constructor ?
 //TODO opt for large numbers

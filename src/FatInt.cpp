@@ -197,23 +197,49 @@ FatInt	FatInt::operator*(const FatInt &n) const
 	return res;
 }
 
+static inline size_t	msb(uint32_t n)
+{
+	size_t	shift = 31;
+
+	n |= 1;
+	while (!(n & (1U << shift)))
+		--shift;
+	return shift;
+}
+
+#include <iostream>
 void	FatInt::udiv(FatInt &q, FatInt &r, const FatInt &num, const FatInt &div)
 {
+	std::cerr << "AMONG US================== " << num << " " << div << "\n";
+	q = 0;
+	r = num;
 	if (div.is_zero())
 	{
 		#ifdef FATINT_ZERO_THROW
 		throw std::logic_error("division by 0");
 		#else
-		q = 0;
-		r = 0;
 		return;
 		#endif
 	}
-	q = 0;
-	r = num;
-	while (r > div)
+	r.sign = div.sign;
+	while ((div.sign && r <= div) || (!div.sign && r >= div))//ucmp anyone
 	{
-		//??
+		std::cerr <<  "wtf" << r << " " << div << " " << (r >= div) << "\n";
+		size_t	shift = (r.words.size() - div.words.size()) * 32
+						+ (msb(*r.words.rbegin()) - msb(*div.words.rbegin()));
+
+		if (shift == 0)
+		{
+			shift = 1;
+			//idk
+		}
+		--shift;
+		q += FatInt(static_cast<int64_t>(1)) << shift;
+		r -= div * FatInt(static_cast<int64_t>(1)) << shift;
+		r.sign = div.sign;
+		std::cerr << "s " << shift << "\n";
+		std::cerr << "q " << q << "\n";
+		std::cerr << "r " << r << "\n";
 	}
 }
 
@@ -221,8 +247,8 @@ FatInt	FatInt::operator/(const FatInt &n) const
 {
 	FatInt	res, foo;
 	
-	res.sign = sign ^ n.sign;
 	udiv(res, foo, *this, n);
+	res.sign = sign ^ n.sign;
 	return res;
 }
 
@@ -230,9 +256,9 @@ FatInt	FatInt::operator%(const FatInt &n) const
 {
 	FatInt	res, foo;
 	
-	res.sign = sign ^ n.sign;
 	udiv(foo, res, *this, n);
-	return foo;
+	res.sign = sign;
+	return res;
 }
 void	FatInt::operator+=(const FatInt &n)
 {

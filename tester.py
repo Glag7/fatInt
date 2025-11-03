@@ -222,7 +222,12 @@ for line in sys.stdin:
 			num1 = int(words[1])
 			num2 = int(words[2])
 			if (num2):
-				expected = [num1 // num2] * 2
+				expected = [abs(num1) // abs(num2)]
+				if (num1 < 0):
+					expected[0] *= -1
+				if (num2 < 0):
+					expected[0] *= -1
+				expected *= 2
 			if (num2 != 0 and [int(x) for x in words[3::]] != expected):
 				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
 			else:
@@ -236,7 +241,10 @@ for line in sys.stdin:
 			num1 = int(words[1])
 			num2 = int(words[2])
 			if (num2):
-				expected = [num1 % num2] * 2
+				expected = [abs(num1) % abs(num2)]
+				if (num1 < 0):
+					expected[0] *= -1
+				expected *= 2
 			if (num2 != 0 and [int(x) for x in words[3::]] != expected):
 				print(colored("wrong:", "red"), "\nexpected", *expected, "\ngot\t", *words[3::])
 			else:
