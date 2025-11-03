@@ -207,10 +207,8 @@ static inline size_t	msb(uint32_t n)
 	return shift;
 }
 
-#include <iostream>
 void	FatInt::udiv(FatInt &q, FatInt &r, const FatInt &num, const FatInt &div)
 {
-	std::cerr << "AMONG US================== " << num << " " << div << "\n";
 	q = 0;
 	r = num;
 	if (div.is_zero())
@@ -224,7 +222,6 @@ void	FatInt::udiv(FatInt &q, FatInt &r, const FatInt &num, const FatInt &div)
 	r.sign = div.sign;
 	while ((div.sign && r <= div) || (!div.sign && r >= div))//ucmp anyone
 	{
-		std::cerr <<  "wtf" << r << " " << div << " " << (r >= div) << "\n";
 		size_t	shift = (r.words.size() - div.words.size()) * 32
 						+ (msb(*r.words.rbegin()) - msb(*div.words.rbegin()));
 
@@ -237,9 +234,6 @@ void	FatInt::udiv(FatInt &q, FatInt &r, const FatInt &num, const FatInt &div)
 		q += FatInt(static_cast<int64_t>(1)) << shift;
 		r -= div * FatInt(static_cast<int64_t>(1)) << shift;
 		r.sign = div.sign;
-		std::cerr << "s " << shift << "\n";
-		std::cerr << "q " << q << "\n";
-		std::cerr << "r " << r << "\n";
 	}
 }
 
