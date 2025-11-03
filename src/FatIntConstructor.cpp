@@ -53,7 +53,7 @@ FatInt::FatInt(const FatInt &f) :
 {
 }
 
-FatInt::FatInt(FatInt &&f) : sign(f.sign)
+FatInt::FatInt(FatInt &&f) noexcept : sign(f.sign)
 {
 	words = std::move(f.words);
 	f.sign = false;

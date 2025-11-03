@@ -56,7 +56,7 @@ class	FatInt
 		explicit FatInt(uint64_t n);
 		FatInt(const std::string &s);
 		FatInt(const FatInt &f);
-		FatInt(FatInt &&f);
+		FatInt(FatInt &&f) noexcept;
 
 		void	operator=(const FatInt &n);
 
