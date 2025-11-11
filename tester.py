@@ -2,6 +2,8 @@ import sys
 from termcolor import colored
 
 #TODO: make this tester less bad at some point
+#TODO: add tests for math funcs
+#TODO: make the tester call funcs directly
 sys.set_int_max_str_digits(100000)
 
 test = 0
